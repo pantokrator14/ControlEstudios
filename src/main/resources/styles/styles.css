@@ -1,0 +1,25 @@
+.root {
+    -fx-primary-color: #6200EE;
+    -fx-secondary-color: #3700B3;
+    -fx-background-color: -fx-base;
+    -fx-text-fill: -fx-text-base;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Modo Claro */
+:root {
+    -fx-base: #FFFFFF;
+    -fx-text-base: #000000;
+}
+
+/* Modo Oscuro */
+:root.dark {
+    -fx-base: #2D2D2D;
+    -fx-text-base: #FFFFFF;
+}
+
+.material-input {
+    -jfx-focus-color: -fx-primary-color;
+    -jfx-unfocus-color: #9E9E9E;
+    -fx-pref-width: 250px;
+}

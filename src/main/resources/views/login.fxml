@@ -1,0 +1,32 @@
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controlestudios.controllers.LoginController"
+           stylesheets="@../styles/login.css">
+
+    <!-- Fondo con imagen blur -->
+    <ImageView fitWidth="800" fitHeight="600">
+        <Image url="@images/login_bg.jpg"/>
+        <effect>
+            <GaussianBlur radius="15"/>
+        </effect>
+    </ImageView>
+
+    <!-- Formulario de login -->
+    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-padding: 40;">
+        <ImageView fitWidth="150" fitHeight="150" Image="@images/logo_instituto.png"/>
+
+        <JFXTextField fx:id="usernameField" promptText="Usuario" styleClass="material-input"/>
+        <JFXPasswordField fx:id="passwordField" promptText="Contraseña" styleClass="material-input"/>
+
+        <JFXButton text="Ingresar" onAction="#handleLogin" style="-fx-background-color: #6200EE; -fx-text-fill: white;"/>
+    </VBox>
+</StackPane>
+
