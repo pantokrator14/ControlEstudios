@@ -13,7 +13,7 @@
 
     <!-- Fondo con imagen blur -->
     <ImageView fitWidth="800" fitHeight="600">
-        <Image url="@images/login_bg.jpg"/>
+        <Image url="@images/fondo.jpeg"/>
         <effect>
             <GaussianBlur radius="15"/>
         </effect>
