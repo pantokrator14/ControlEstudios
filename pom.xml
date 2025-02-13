@@ -36,6 +36,17 @@
             <artifactId>fontawesomefx-fontawesome</artifactId>
             <version>4.7.0-9.1.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.12</version> <!-- Actualiza SLF4J si es necesario -->
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.3</version> <!-- Versión segura -->
+        </dependency>
     </dependencies>
 
     <build>
@@ -44,6 +55,23 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>--add-opens</arg>
+                        <arg>java.base/java.lang.reflect=ALL-UNNAMED</arg>
+                        <arg>--add-opens</arg>
+                        <arg>javafx.controls/javafx.scene.control=ALL-UNNAMED</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
+
+
 
 </project>
