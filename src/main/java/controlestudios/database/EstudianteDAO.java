@@ -8,14 +8,29 @@ import java.util.List;
 
 public class EstudianteDAO {
 
-    // Guardar estudiante
-    public void guardarEstudiante(Estudiante estudiante) { ... } // Mantén el código anterior
+    // Guardar un estudiante
+    public void guardarEstudiante(Estudiante estudiante) {
+        String sql = "INSERT INTO estudiantes (nombre_completo, fecha_nacimiento, cedula, seccion) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, estudiante.getNombreCompleto());
+            pstmt.setString(2, estudiante.getFechaNacimiento().toString()); // SQLite almacena fechas como TEXT
+            pstmt.setString(3, estudiante.getCedula());
+            pstmt.setString(4, estudiante.getSeccion());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error al guardar estudiante: " + e.getMessage());
+        }
+    }
 
     // Actualizar estudiante
     public void actualizarEstudiante(Estudiante estudiante) {
         String sql = "UPDATE estudiantes SET nombre_completo = ?, fecha_nacimiento = ?, cedula = ?, seccion = ? WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, estudiante.getNombreCompleto());
@@ -35,7 +50,7 @@ public class EstudianteDAO {
         List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "SELECT * FROM estudiantes";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -60,7 +75,7 @@ public class EstudianteDAO {
     public void eliminarEstudiante(int id) {
         String sql = "DELETE FROM estudiantes WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);

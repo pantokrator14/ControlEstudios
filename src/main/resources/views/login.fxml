@@ -13,7 +13,7 @@
 
     <!-- Fondo con imagen blur -->
     <ImageView fitWidth="800" fitHeight="600">
-        <Image url="@images/fondo.jpeg"/>
+        <Image url="@/images/fondo.JPG"/>
         <effect>
             <GaussianBlur radius="15"/>
         </effect>
@@ -21,7 +21,9 @@
 
     <!-- Formulario de login -->
     <VBox alignment="CENTER" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-padding: 40;">
-        <ImageView fitWidth="150" fitHeight="150" Image="@images/logo_instituto.png"/>
+        <ImageView fitWidth="150" fitHeight="150">
+            <Image url="@/images/logo.png"/>
+        </ImageView>
 
         <JFXTextField fx:id="usernameField" promptText="Usuario" styleClass="material-input"/>
         <JFXPasswordField fx:id="passwordField" promptText="Contraseña" styleClass="material-input"/>

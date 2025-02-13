@@ -11,7 +11,7 @@ public class MateriaDAO {
     public void guardarMateria(Materia materia) {
         String sql = "INSERT INTO materias (nombre, descripcion, nombre_profesor) VALUES (?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, materia.getNombre());
@@ -28,7 +28,7 @@ public class MateriaDAO {
     public void actualizarMateria(Materia materia) {
         String sql = "UPDATE materias SET nombre = ?, descripcion = ?, nombre_profesor = ? WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, materia.getNombre());
@@ -46,7 +46,7 @@ public class MateriaDAO {
     public void eliminarMateria(int id) {
         String sql = "DELETE FROM materias WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
@@ -62,7 +62,7 @@ public class MateriaDAO {
         List<Materia> materias = new ArrayList<>();
         String sql = "SELECT * FROM materias";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 

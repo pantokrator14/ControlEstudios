@@ -14,4 +14,35 @@ public class Nota {
     }
 
     // Getters y Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getEstudianteId() {
+        return estudianteId;
+    }
+
+    public void setEstudianteId(int estudianteId) {
+        this.estudianteId = estudianteId;
+    }
+
+    public int getMateriaId() {
+        return materiaId;
+    }
+
+    public void setMateriaId(int materiaId) {
+        this.materiaId = materiaId;
+    }
+
+    public double getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(double calificacion) {
+        this.calificacion = calificacion;
+    }
 }

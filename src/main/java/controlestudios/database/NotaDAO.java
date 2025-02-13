@@ -11,7 +11,7 @@ public class NotaDAO {
     public void guardarNota(Nota nota) {
         String sql = "INSERT INTO notas (estudiante_id, materia_id, calificacion) VALUES (?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, nota.getEstudianteId());
@@ -29,7 +29,7 @@ public class NotaDAO {
         List<Nota> notas = new ArrayList<>();
         String sql = "SELECT * FROM notas WHERE estudiante_id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, estudianteId);
@@ -55,7 +55,7 @@ public class NotaDAO {
     public void actualizarNota(Nota nota) {
         String sql = "UPDATE notas SET calificacion = ? WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setDouble(1, nota.getCalificacion());
@@ -71,7 +71,7 @@ public class NotaDAO {
     public void eliminarNota(int id) {
         String sql = "DELETE FROM notas WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
