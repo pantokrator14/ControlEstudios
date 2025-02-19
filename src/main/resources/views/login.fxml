@@ -1,34 +1,48 @@
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXPasswordField?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.effect.GaussianBlur?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
 
-<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="controlestudios.controllers.LoginController"
            stylesheets="@../styles/login.css">
 
-    <!-- Fondo con imagen blur -->
-    <ImageView fitWidth="800" fitHeight="600">
-        <Image url="@/images/fondo.JPG"/>
-        <effect>
-            <GaussianBlur radius="15"/>
-        </effect>
-    </ImageView>
+    <!-- Fondo con gradiente -->
+    <Pane style="-fx-background-color: linear-gradient(to bottom right, #FFA500, #FFD700);"/>
 
-    <!-- Formulario de login -->
-    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-padding: 40;">
-        <ImageView fitWidth="150" fitHeight="150">
-            <Image url="@/images/logo.png"/>
+    <!-- Contenedor principal centrado -->
+    <VBox alignment="CENTER" spacing="30" styleClass="login-container">
+        <!-- Logo -->
+        <ImageView fitWidth="300" fitHeight="300">
+            <Image url="@../images/logo.png"/>
         </ImageView>
 
-        <JFXTextField fx:id="usernameField" promptText="Usuario" styleClass="material-input"/>
-        <JFXPasswordField fx:id="passwordField" promptText="Contraseña" styleClass="material-input"/>
+        <!-- Campos del formulario -->
+        <VBox alignment="CENTER" spacing="25" styleClass="form-container">
+            <!-- Campo de usuario -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
+                <SVGPath styleClass="icon" content="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                <TextField fx:id="usernameField" promptText="Usuario" styleClass="text-field"/>
+            </HBox>
 
-        <JFXButton text="Ingresar" onAction="#handleLogin" style="-fx-background-color: #6200EE; -fx-text-fill: white;"/>
+            <!-- Campo de contraseña -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
+                <SVGPath styleClass="icon" content="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                <PasswordField fx:id="passwordField" promptText="Contraseña" styleClass="text-field"/>
+            </HBox>
+
+            <!-- Botón de ingreso -->
+            <Button text="Ingresar" styleClass="login-button">
+                <graphic>
+                    <SVGPath styleClass="icon" content="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                </graphic>
+            </Button>
+        </VBox>
+
+        <!-- Toggle de tema -->
+        <ToggleButton fx:id="themeToggle" styleClass="theme-toggle"/>
     </VBox>
 </StackPane>
-

@@ -1,50 +1,49 @@
 package controlestudios;
 
+import controlestudios.database.DatabaseInitializer;
 import javafx.application.Application;
+import javafx.scene.control.Alert;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
-import java.util.Objects;
 
 public class MainApp extends Application {
-
     private static final Logger logger = LoggerFactory.getLogger(MainApp.class);
 
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Carga el FXML con verificación de null
-            Parent root = FXMLLoader.load(
-                    Objects.requireNonNull(
-                            getClass().getResource("/views/login.fxml"),
-                            "No se encontró el archivo FXML: /views/login.fxml"
-                    )
-            );
-
-            Scene scene = new Scene(root, 600, 400);
+            DatabaseInitializer.initialize();
+            Parent root = loadFXML("/views/login.fxml");
+            primaryStage.setScene(new Scene(root, 800, 600));
             primaryStage.setTitle("Control de Estudios");
-            primaryStage.setScene(scene);
             primaryStage.show();
-
-        } catch (IOException | NullPointerException e) {
-            // Logging profesional con SLF4J
+        } catch (Exception e) {
             logger.error("Error crítico al iniciar la aplicación", e);
-            showFatalErrorAlert();
+            showFatalError();
         }
     }
 
-    private void showFatalErrorAlert() {
+    public static Parent loadFXML(String fxmlPath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(MainApp.class.getResource(fxmlPath));
+        return loader.load();
+    }
+
+    public static Scene loadScene(String fxmlPath) throws IOException {
+        return new Scene(loadFXML(fxmlPath));
+    }
+
+    private void showFatalError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error Fatal");
-        alert.setHeaderText("No se pudo iniciar la aplicación");
-        alert.setContentText("Por favor, reinstale el software o contacte al soporte.");
+        alert.setHeaderText("La aplicación no puede iniciar");
+        alert.setContentText("Por favor, contacte al soporte técnico.");
         alert.showAndWait();
-        System.exit(1); // Cierra la aplicación con código de error
+        System.exit(1);
     }
 
     public static void main(String[] args) {
