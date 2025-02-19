@@ -17,21 +17,6 @@ public class LoginController {
     @FXML private ToggleButton themeToggle;
     @FXML private StackPane rootPane;
 
-    private boolean darkMode = false;
-
-    @FXML
-    private void toggleTheme() {
-        darkMode = !darkMode;
-        updateTheme();
-    }
-
-    private void updateTheme() {
-        if(darkMode) {
-            rootPane.getStyleClass().add("dark-mode");
-        } else {
-            rootPane.getStyleClass().remove("dark-mode");
-        }
-    }
 
     /*Login */
     @FXML private TextField usernameField;

@@ -42,7 +42,5 @@
             </Button>
         </VBox>
 
-        <!-- Toggle de tema -->
-        <ToggleButton fx:id="themeToggle" styleClass="theme-toggle"/>
     </VBox>
 </StackPane>
