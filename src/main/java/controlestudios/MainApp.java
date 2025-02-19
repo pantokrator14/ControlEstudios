@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 public class MainApp extends Application {
-    private static final Logger logger = LoggerFactory.getLogger(MainApp.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MainApp.class);
 
     @Override
     public void start(Stage primaryStage) {
@@ -20,10 +20,11 @@ public class MainApp extends Application {
             DatabaseInitializer.initialize();
             Parent root = loadFXML("/views/login.fxml");
             primaryStage.setScene(new Scene(root, 800, 600));
+            primaryStage.setMaximized(true);
             primaryStage.setTitle("Control de Estudios");
             primaryStage.show();
         } catch (Exception e) {
-            logger.error("Error crítico al iniciar la aplicación", e);
+            LOG.error("Error crítico al iniciar la aplicación", e);
             showFatalError();
         }
     }

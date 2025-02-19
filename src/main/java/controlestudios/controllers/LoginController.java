@@ -2,6 +2,9 @@ package controlestudios.controllers;
 
 import controlestudios.MainApp;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -41,9 +44,13 @@ public class LoginController {
 
     private void cargarMenuPrincipal() {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_menu.fxml"));
+            Parent root = loader.load();
+
+            // Obtener la ventana actual y reutilizarla
             Stage stage = (Stage) usernameField.getScene().getWindow();
-            stage.setScene(MainApp.loadScene("/views/main_menu.fxml"));
-            stage.setTitle("Menú Principal");
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true); // Mantener maximizada
         } catch (Exception e) {
             logger.error("Error al cargar el menú principal", e);
             mostrarError("Error", "No se pudo cargar el menú principal.");
