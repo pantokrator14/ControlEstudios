@@ -9,7 +9,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controlestudios.controllers.EstudianteController"
-            stylesheets="@../styles/main_menu.css">
+            stylesheets="@../styles/materias.css">
 
     <!-- Sidebar (mismo que en main_menu.fxml) -->
     <left>
