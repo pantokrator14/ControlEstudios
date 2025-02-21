@@ -49,3 +49,7 @@
 .login-button:hover {
     -fx-background-color: #FF8C00;
 }
+
+.login-button .icon {
+    -fx-fill: white;
+}

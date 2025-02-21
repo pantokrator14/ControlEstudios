@@ -1,9 +1,10 @@
 package controlestudios.database;
 
 import controlestudios.models.Materia;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MateriaDAO {
 
@@ -58,9 +59,9 @@ public class MateriaDAO {
     }
 
     // Obtener todas las materias
-    public List<Materia> obtenerTodasMaterias() {
-        List<Materia> materias = new ArrayList<>();
+    public ObservableList<Materia> obtenerTodasMaterias() {
         String sql = "SELECT * FROM materias";
+        ObservableList<Materia> materias = FXCollections.observableArrayList();
 
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();

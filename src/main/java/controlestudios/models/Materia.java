@@ -6,6 +6,8 @@ public class Materia {
     private String descripcion;
     private String nombreProfesor;
 
+    // constructor vacío
+    public Materia() {}
     // Constructor
     public Materia(String nombre, String descripcion, String nombreProfesor) {
         this.nombre = nombre;

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controlestudios.controllers.MainMenuController"
+            fx:controller="controlestudios.controllers.EstudianteController"
             stylesheets="@../styles/main_menu.css">
 
-    <!-- Sidebar izquierdo (20% del ancho) -->
+    <!-- Sidebar (mismo que en main_menu.fxml) -->
     <left>
         <VBox fx:id="sidebar" styleClass="sidebar" spacing="20" prefWidth="200">
             <HBox alignment="CENTER" styleClass="sidebar-header" spacing="10" prefHeight="100">
@@ -54,8 +54,35 @@
 
     <!-- Contenido principal -->
     <center>
-        <StackPane>
-            <Label text="¡Bienvenido!" styleClass="welcome-message" />
-        </StackPane>
+        <VBox spacing="20" styleClass="content-container">
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-container">
+                <Label text="Estudiantes" styleClass="title-label"/>
+                <Button text="Agregar Estudiante" styleClass="add-button" onAction="#handleAgregarEstudiante">
+                    <graphic>
+                        <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <Line endX="1000" stroke="#e0e0e0"/>
+
+            <StackPane>
+                <TableView fx:id="tablaEstudiantes" styleClass="estudiantes-table">
+                    <columns>
+                        <TableColumn text="Nombre" prefWidth="250" property="nombreCompleto"/>
+                        <TableColumn text="Cédula" prefWidth="120" property="cedula"/>
+                        <TableColumn text="Fecha Nacimiento" prefWidth="150" property="fechaNacimiento"/>
+                        <TableColumn text="Sección" prefWidth="100" property="seccion"/>
+                        <TableColumn text="Acciones" prefWidth="120">
+                            <cellFactory>
+                                <TableColumn fx:factory="actions"/>
+                            </cellFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+                <Label text="No hay estudiantes registrados" styleClass="empty-message"
+                       visible="${tablaEstudiantes.items.empty}"/>
+            </StackPane>
+        </VBox>
     </center>
 </BorderPane>

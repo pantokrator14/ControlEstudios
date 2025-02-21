@@ -53,8 +53,66 @@ svg-path {
     -fx-fill: white; /* Cambia a blanco al hacer hover */
 }
 
-/* Mensaje de bienvenida */
-.welcome-message {
+/* Estilos para la interfaz de Materias */
+.content-container {
+    -fx-padding: 30;
+}
+
+.header-container {
+    -fx-padding: 0 0 20 0;
+}
+
+.title-label {
     -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.add-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-graphic-text-gap: 10;
+}
+
+.add-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.materias-table {
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.empty-message {
+    -fx-font-size: 16px;
     -fx-text-fill: #666;
+}
+
+/* Botones de acción en la tabla */
+.action-button {
+    -fx-background-radius: 15;
+    -fx-padding: 5;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+}
+
+.edit-button {
+    -fx-background-color: #FFEB3B;
+}
+
+.delete-button {
+    -fx-background-color: #FF5252;
+}
+
+.action-button:hover {
+    -fx-background-color: white !important;
+}
+
+.action-button:hover .edit-button {
+    -fx-fill: black;
+}
+.action-button:hover .delete-button {
+    -fx-fill: black;
 }

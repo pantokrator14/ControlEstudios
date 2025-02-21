@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controlestudios.controllers.MainMenuController"
+            fx:controller="controlestudios.controllers.MateriaController"
             stylesheets="@../styles/main_menu.css">
 
-    <!-- Sidebar izquierdo (20% del ancho) -->
+    <!-- Sidebar (reutilizado del menú principal) -->
     <left>
         <VBox fx:id="sidebar" styleClass="sidebar" spacing="20" prefWidth="200">
             <HBox alignment="CENTER" styleClass="sidebar-header" spacing="10" prefHeight="100">
@@ -54,8 +56,44 @@
 
     <!-- Contenido principal -->
     <center>
-        <StackPane>
-            <Label text="¡Bienvenido!" styleClass="welcome-message" />
-        </StackPane>
+        <VBox spacing="20" styleClass="content-container">
+            <!-- Encabezado -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-container">
+                <Label text="Materias" styleClass="title-label"/>
+                <Button text="Agregar Materia" styleClass="add-button" onAction="#handleAgregarMateria">
+                    <graphic>
+                        <SVGPath content="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <!-- Línea divisoria -->
+            <Line endX="1000" stroke="#e0e0e0"/>
+
+            <!-- Tabla o mensaje vacío -->
+            <StackPane>
+                <TableView fx:id="tablaMaterias" styleClass="materias-table">
+                    <columns>
+                        <TableColumn text="Nombre" prefWidth="200">
+                            <cellValueFactory><PropertyValueFactory property="nombre"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Profesor" prefWidth="150">
+                            <cellValueFactory><PropertyValueFactory property="profesor"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Descripción" prefWidth="300">
+                            <cellValueFactory><PropertyValueFactory property="descripcion"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Acciones" prefWidth="120">
+                            <cellFactory>
+                                <TableColumn fx:factory="actions"/>
+                            </cellFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+
+                <Label text="No hay materias registradas aún" styleClass="empty-message"
+                       visible="${tablaMaterias.items.empty}"/>
+            </StackPane>
+        </VBox>
     </center>
 </BorderPane>

@@ -1,6 +1,10 @@
 package controlestudios.database;
 
 import controlestudios.models.Estudiante;
+import controlestudios.models.Materia;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,8 +51,8 @@ public class EstudianteDAO {
 
     // Obtener todos los estudiantes
     public List<Estudiante> obtenerTodosEstudiantes() {
-        List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "SELECT * FROM estudiantes";
+        ObservableList<Estudiante> estudiantes = FXCollections.observableArrayList();
 
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();

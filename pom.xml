@@ -16,7 +16,6 @@
 
 <dependencies>
 
-
     <!-- SQLite -->
     <dependency>
         <groupId>org.xerial</groupId>

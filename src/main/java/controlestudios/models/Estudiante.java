@@ -9,6 +9,8 @@ public class Estudiante {
     private String cedula;
     private String seccion;
 
+    // constructor vacío
+    public Estudiante() {}
     // Constructor
     public Estudiante(String nombreCompleto, LocalDate fechaNacimiento, String cedula, String seccion) {
         this.nombreCompleto = nombreCompleto;
