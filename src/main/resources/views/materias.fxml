@@ -11,7 +11,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controlestudios.controllers.MateriaController"
-            stylesheets="@../styles/main_menu.css">
+            stylesheets="@../styles/materias.css">
 
     <!-- Sidebar (reutilizado del menú principal) -->
     <left>
