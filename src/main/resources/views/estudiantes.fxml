@@ -6,12 +6,12 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controlestudios.controllers.EstudianteController"
-            stylesheets="@../styles/materias.css">
+            stylesheets="@../styles/main_menu.css">
 
-    <!-- Sidebar (mismo que en main_menu.fxml) -->
     <left>
         <VBox fx:id="sidebar" styleClass="sidebar" spacing="20" prefWidth="200">
             <HBox alignment="CENTER" styleClass="sidebar-header" spacing="10" prefHeight="100">
@@ -52,7 +52,6 @@
         </VBox>
     </left>
 
-    <!-- Contenido principal -->
     <center>
         <VBox spacing="20" styleClass="content-container">
             <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-container">
@@ -69,13 +68,22 @@
             <StackPane>
                 <TableView fx:id="tablaEstudiantes" styleClass="estudiantes-table">
                     <columns>
-                        <TableColumn text="Nombre" prefWidth="250" property="nombreCompleto"/>
-                        <TableColumn text="Cédula" prefWidth="120" property="cedula"/>
-                        <TableColumn text="Fecha Nacimiento" prefWidth="150" property="fechaNacimiento"/>
-                        <TableColumn text="Sección" prefWidth="100" property="seccion"/>
+                        <!-- Usar cellValueFactory en lugar de property -->
+                        <TableColumn text="Nombre" prefWidth="250">
+                            <cellValueFactory><PropertyValueFactory property="nombreCompleto"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Cédula" prefWidth="120">
+                            <cellValueFactory><PropertyValueFactory property="cedula"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Fecha Nacimiento" prefWidth="150">
+                            <cellValueFactory><PropertyValueFactory property="fechaNacimiento"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Sección" prefWidth="100">
+                            <cellValueFactory><PropertyValueFactory property="seccion"/></cellValueFactory>
+                        </TableColumn>
                         <TableColumn text="Acciones" prefWidth="120">
                             <cellFactory>
-                                <TableColumn fx:factory="actions"/>
+                                <TableColumn fx:factory="actions"/> <!-- Esto se reemplazará en el controlador -->
                             </cellFactory>
                         </TableColumn>
                     </columns>

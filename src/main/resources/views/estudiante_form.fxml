@@ -5,7 +5,7 @@
 <GridPane xmlns="http://javafx.com/javafx/17"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controlestudios.controllers.EstudianteFormController"
-          stylesheets="@../styles/forms.css"
+          stylesheets="@../styles/materia_forms.css"
           hgap="10" vgap="10">
 
     <Label text="Nombre Completo:" GridPane.rowIndex="0"/>

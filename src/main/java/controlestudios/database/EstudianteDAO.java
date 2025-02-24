@@ -50,7 +50,7 @@ public class EstudianteDAO {
     }
 
     // Obtener todos los estudiantes
-    public List<Estudiante> obtenerTodosEstudiantes() {
+    public ObservableList<Estudiante> obtenerTodosEstudiantes() {
         String sql = "SELECT * FROM estudiantes";
         ObservableList<Estudiante> estudiantes = FXCollections.observableArrayList();
 
