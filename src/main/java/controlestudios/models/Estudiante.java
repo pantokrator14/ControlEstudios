@@ -19,6 +19,9 @@ public class Estudiante {
         this.seccion = seccion;
     }
 
+    public Estudiante(int id, String nombreCompleto, String cedula, LocalDate fechaNacimiento, String seccion) {
+    }
+
     // Getters y Setters
     public int getId() {
         return id;

@@ -15,6 +15,9 @@ public class Materia {
         this.nombreProfesor = nombreProfesor;
     }
 
+    public Materia(int idMateria, String s, String s1, String s2) {
+    }
+
     // Getters y Setters
     public int getId() {
         return id;

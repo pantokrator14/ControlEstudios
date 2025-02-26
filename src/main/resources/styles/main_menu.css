@@ -58,3 +58,24 @@ svg-path {
     -fx-font-size: 24px;
     -fx-text-fill: #666;
 }
+
+/* styles/main_menu.css */
+.search-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+}
+
+.download-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+}
+
+.notas-table .table-column {
+    -fx-alignment: CENTER;
+}
+
+.input-field {
+    -fx-pref-width: 250px;
+}

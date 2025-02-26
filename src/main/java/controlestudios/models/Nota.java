@@ -1,48 +1,27 @@
 package controlestudios.models;
 
+import javafx.beans.property.*;
+
 public class Nota {
-    private int id;
-    private int estudianteId;
-    private int materiaId;
-    private double calificacion;
+    private final IntegerProperty id = new SimpleIntegerProperty();
+    private final IntegerProperty idEstudiante = new SimpleIntegerProperty();
+    private final IntegerProperty idMateria = new SimpleIntegerProperty();
+    private final DoubleProperty valor = new SimpleDoubleProperty();
+    private final StringProperty nombreMateria = new SimpleStringProperty();
 
-    // Constructor
-    public Nota(int estudianteId, int materiaId, double calificacion) {
-        this.estudianteId = estudianteId;
-        this.materiaId = materiaId;
-        this.calificacion = calificacion;
-    }
+    // Getters/Setters para propiedades
+    public int getId() { return id.get(); }
+    public void setId(int value) { id.set(value); }
 
-    // Getters y Setters
-    public int getId() {
-        return id;
-    }
+    public int getIdEstudiante() { return idEstudiante.get(); }
+    public void setIdEstudiante(int value) { idEstudiante.set(value); }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getIdMateria() { return idMateria.get(); }
+    public void setIdMateria(int value) { idMateria.set(value); }
 
-    public int getEstudianteId() {
-        return estudianteId;
-    }
+    public double getValor() { return valor.get(); }
+    public void setValor(double value) { valor.set(value); }
 
-    public void setEstudianteId(int estudianteId) {
-        this.estudianteId = estudianteId;
-    }
-
-    public int getMateriaId() {
-        return materiaId;
-    }
-
-    public void setMateriaId(int materiaId) {
-        this.materiaId = materiaId;
-    }
-
-    public double getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(double calificacion) {
-        this.calificacion = calificacion;
-    }
+    public String getNombreMateria() { return nombreMateria.get(); }
+    public void setNombreMateria(String value) { nombreMateria.set(value); }
 }

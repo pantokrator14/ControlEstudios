@@ -1,6 +1,10 @@
 package controlestudios.database;
 
 import controlestudios.models.Nota;
+import controlestudios.models.Estudiante;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +29,23 @@ public class NotaDAO {
     }
 
     // Obtener todas las notas de un estudiante
-    public List<Nota> obtenerNotasPorEstudiante(int estudianteId) {
-        List<Nota> notas = new ArrayList<>();
-        String sql = "SELECT * FROM notas WHERE estudiante_id = ?";
-
-        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, estudianteId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Nota nota = new Nota(
-                            rs.getInt("estudiante_id"),
-                            rs.getInt("materia_id"),
-                            rs.getDouble("calificacion")
-                    );
-                    nota.setId(rs.getInt("id"));
-                    notas.add(nota);
-                }
+    public ObservableList<Nota> obtenerNotasPorEstudiante(int estudianteId) {
+        String query = "SELECT n.*, m.nombre as nombre_materia FROM notas n "
+                + "JOIN materias m ON n.id_materia = m.id "
+                + "WHERE n.id_estudiante = ?";
+        ObservableList<Nota> notas = FXCollections.observableArrayList();
+        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
+            pstmt.setInt(1, idEstudiante);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Nota nota = new Nota();
+                nota.setId(rs.getInt("id"));
+                nota.setValor(rs.getDouble("nota"));
+                nota.setNombreMateria(rs.getString("nombre_materia"));
+                notas.add(nota);
             }
-
         } catch (SQLException e) {
-            System.err.println("Error al obtener notas: " + e.getMessage());
+            e.printStackTrace();
         }
         return notas;
     }

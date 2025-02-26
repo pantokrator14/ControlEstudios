@@ -89,4 +89,25 @@ public class EstudianteDAO {
             System.err.println("Error al eliminar estudiante: " + e.getMessage());
         }
     }
+
+    public Estudiante buscarPorCedula(String cedula) {
+        String query = "SELECT * FROM estudiantes WHERE cedula = ?";
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, cedula);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Estudiante(
+                        rs.getInt("id"),
+                        rs.getString("nombre_completo"),
+                        rs.getString("cedula"),
+                        rs.getDate("fecha_nacimiento").toLocalDate(),
+                        rs.getString("seccion")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
