@@ -119,7 +119,7 @@ public class NotaController {
         if (estudianteActual == null) {
             mostrarErrorEstudianteNoEncontrado();
         } else {
-            setModoBusqueda(false); // Actualizar propiedad observable
+            setModoBusqueda(false); // Actualiza la propiedad
             cargarNotasEstudiante();
         }
     }
@@ -219,16 +219,20 @@ public class NotaController {
         return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
 
+    // Getter para la propiedad (requerido por FXML)
     public BooleanProperty modoBusquedaProperty() {
         return modoBusqueda;
     }
 
+    // Getter tradicional
     public boolean isModoBusqueda() {
         return modoBusqueda.get();
     }
 
+    // Setter
     public void setModoBusqueda(boolean modoBusqueda) {
         this.modoBusqueda.set(modoBusqueda);
     }
+
 
 }
