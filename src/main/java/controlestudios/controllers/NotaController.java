@@ -22,6 +22,37 @@ import java.util.Objects;
 
 public class NotaController {
 
+    //Sidebar
+    @FXML
+    private VBox sidebar;
+
+
+
+    @FXML
+    private void handleMaterias() {
+        // Cargar interfaz de materias (pendiente)
+    }
+
+    @FXML
+    private void handleEstudiantes() {
+        // Cargar interfaz de estudiantes (pendiente)
+    }
+
+    @FXML
+    private void handleNotas() {
+        // Cargar interfaz de notas (pendiente)
+    }
+
+    @FXML
+    private void handleSalir() {
+        // Cerrar sesión y volver al login
+        Stage stage = (Stage) sidebar.getScene().getWindow();
+        stage.close();
+    }
+
+
+    //Contenido
+
     //============= PROPERTIES =============
     private final BooleanProperty modoBusqueda = new SimpleBooleanProperty(true);
     private Estudiante estudianteActual;
