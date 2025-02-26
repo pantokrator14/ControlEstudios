@@ -14,62 +14,42 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.collections.ObservableList;
 import controlestudios.models.*;
 import controlestudios.database.*;
+import javafx.collections.ObservableList;
 import java.io.IOException;
+import java.util.Objects;
 
 public class NotaController {
 
-    //Sidebar
-    @FXML
-    private VBox sidebar;
-
-
-
-    @FXML
-    private void handleMaterias() {
-        // Cargar interfaz de materias (pendiente)
-    }
-
-    @FXML
-    private void handleEstudiantes() {
-        // Cargar interfaz de estudiantes (pendiente)
-    }
-
-    @FXML
-    private void handleNotas() {
-        // Cargar interfaz de notas (pendiente)
-    }
-
-    @FXML
-    private void handleSalir() {
-        // Cerrar sesión y volver al login
-        Stage stage = (Stage) sidebar.getScene().getWindow();
-        stage.close();
-    }
-
-
-    //contenido
-
-    @FXML private StackPane contenidoDinamico;
-    @FXML private TextField txtCedulaBusqueda;
-    @FXML private TableView<Nota> tablaNotas;
-    @FXML private TableColumn<Nota, String> colMateria;
-    @FXML private TableColumn<Nota, Double> colNota;
-    @FXML private TableColumn<Nota, Void> colAcciones;
-
+    //============= PROPERTIES =============
     private final BooleanProperty modoBusqueda = new SimpleBooleanProperty(true);
-
     private Estudiante estudianteActual;
     private final NotaDAO notaDAO = new NotaDAO();
     private final EstudianteDAO estudianteDAO = new EstudianteDAO();
     private final MateriaDAO materiaDAO = new MateriaDAO();
 
+    //============= FXML COMPONENTS =============
+    @FXML private StackPane contenidoDinamico;
+    @FXML private TextField txtCedulaBusqueda;
+    @FXML private VBox pantallaBusqueda;
+    @FXML private VBox pantallaNotas;
+    @FXML private TableView<Nota> tablaNotas;
+    @FXML private TableColumn<Nota, String> colMateria;
+    @FXML private TableColumn<Nota, Double> colNota;
+    @FXML private TableColumn<Nota, Void> colAcciones;
+
+    //============= INITIALIZATION =============
     @FXML
     public void initialize() {
+        configurarVinculaciones();
         configurarColumnas();
         configurarAccionesTabla();
+    }
+
+    private void configurarVinculaciones() {
+        pantallaBusqueda.visibleProperty().bind(modoBusqueda);
+        pantallaNotas.visibleProperty().bind(modoBusqueda.not());
     }
 
     private void configurarColumnas() {
@@ -77,6 +57,7 @@ public class NotaController {
         colNota.setCellValueFactory(new PropertyValueFactory<>("valor"));
     }
 
+    //============= TABLE ACTIONS =============
     private void configurarAccionesTabla() {
         colAcciones.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button();
@@ -88,14 +69,20 @@ public class NotaController {
                 iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
                 btnEditar.setGraphic(iconoEditar);
                 btnEditar.getStyleClass().addAll("action-button", "edit-button");
-                btnEditar.setOnAction(e -> editarNota(getTableView().getItems().get(getIndex())));
+                btnEditar.setOnAction(e -> {
+                    Nota nota = getTableView().getItems().get(getIndex());
+                    editarNota(nota);
+                });
 
                 // Configurar botón Eliminar
                 SVGPath iconoEliminar = new SVGPath();
                 iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
                 btnEliminar.setGraphic(iconoEliminar);
                 btnEliminar.getStyleClass().addAll("action-button", "delete-button");
-                btnEliminar.setOnAction(e -> eliminarNota(getTableView().getItems().get(getIndex())));
+                btnEliminar.setOnAction(e -> {
+                    Nota nota = getTableView().getItems().get(getIndex());
+                    eliminarNota(nota);
+                });
             }
 
             @Override
@@ -110,6 +97,7 @@ public class NotaController {
         });
     }
 
+    //============= CORE LOGIC =============
     @FXML
     private void handleBuscarEstudiante() {
         String cedula = txtCedulaBusqueda.getText().trim();
@@ -119,41 +107,8 @@ public class NotaController {
         if (estudianteActual == null) {
             mostrarErrorEstudianteNoEncontrado();
         } else {
-            setModoBusqueda(false); // Actualiza la propiedad
+            modoBusqueda.set(false);
             cargarNotasEstudiante();
-        }
-    }
-
-    private void cargarNotasEstudiante() {
-        ObservableList<Nota> notas = notaDAO.obtenerNotasPorEstudiante(estudianteActual.getId());
-        tablaNotas.setItems(notas);
-    }
-
-    private void mostrarErrorEstudianteNoEncontrado() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Estudiante no encontrado");
-        alert.setContentText("No existe un estudiante con la cédula ingresada.");
-
-        ButtonType btnIrAEstudiantes = new ButtonType("Registrar Estudiante", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().add(btnIrAEstudiantes);
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType == btnIrAEstudiantes) {
-                navegarAEstudiantes();
-            }
-        });
-    }
-
-    private void navegarAEstudiantes() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/estudiantes.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) contenidoDinamico.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -179,6 +134,12 @@ public class NotaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //============= DATABASE OPERATIONS =============
+    private void cargarNotasEstudiante() {
+        ObservableList<Nota> notas = notaDAO.obtenerNotasPorEstudiante(estudianteActual.getId());
+        tablaNotas.setItems(notas);
     }
 
     private void editarNota(Nota nota) {
@@ -211,6 +172,33 @@ public class NotaController {
         }
     }
 
+    //============= UTILITIES =============
+    private void mostrarErrorEstudianteNoEncontrado() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Estudiante no encontrado");
+        alert.setContentText("La cédula ingresada no está registrada.");
+
+        ButtonType btnIrAEstudiantes = new ButtonType("Registrar Estudiante", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().add(btnIrAEstudiantes);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == btnIrAEstudiantes) {
+                navegarAEstudiantes();
+            }
+        });
+    }
+
+    private void navegarAEstudiantes() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/estudiantes.fxml")));
+            Stage stage = (Stage) contenidoDinamico.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean mostrarConfirmacion(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmación");
@@ -219,20 +207,16 @@ public class NotaController {
         return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
 
-    // Getter para la propiedad (requerido por FXML)
+    //============= GETTERS PARA VINCULACIÓN =============
     public BooleanProperty modoBusquedaProperty() {
         return modoBusqueda;
     }
 
-    // Getter tradicional
     public boolean isModoBusqueda() {
         return modoBusqueda.get();
     }
 
-    // Setter
     public void setModoBusqueda(boolean modoBusqueda) {
         this.modoBusqueda.set(modoBusqueda);
     }
-
-
 }
