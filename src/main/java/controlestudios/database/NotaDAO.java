@@ -18,9 +18,9 @@ public class NotaDAO {
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, nota.getEstudianteId());
-            pstmt.setInt(2, nota.getMateriaId());
-            pstmt.setDouble(3, nota.getCalificacion());
+            pstmt.setInt(1, nota.getIdEstudiante());
+            pstmt.setInt(2, nota.getIdMateria());
+            pstmt.setDouble(3, nota.getValor());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -34,8 +34,9 @@ public class NotaDAO {
                 + "JOIN materias m ON n.id_materia = m.id "
                 + "WHERE n.id_estudiante = ?";
         ObservableList<Nota> notas = FXCollections.observableArrayList();
-        try (PreparedStatement pstmt = conexion.prepareStatement(query)) {
-            pstmt.setInt(1, idEstudiante);
+        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, estudianteId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Nota nota = new Nota();
@@ -57,7 +58,7 @@ public class NotaDAO {
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setDouble(1, nota.getCalificacion());
+            pstmt.setDouble(1, nota.getValor());
             pstmt.setInt(2, nota.getId());
             pstmt.executeUpdate();
 
