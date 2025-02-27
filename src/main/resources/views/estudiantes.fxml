@@ -82,9 +82,6 @@
                             <cellValueFactory><PropertyValueFactory property="seccion"/></cellValueFactory>
                         </TableColumn>
                         <TableColumn text="Acciones" prefWidth="120">
-                            <cellFactory>
-                                <TableColumn fx:factory="actions"/> <!-- Esto se reemplazará en el controlador -->
-                            </cellFactory>
                         </TableColumn>
                     </columns>
                 </TableView>

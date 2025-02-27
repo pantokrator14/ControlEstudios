@@ -20,34 +20,62 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class EstudianteController {
     //Sidebar
     @FXML
     private VBox sidebar;
 
-
-
     @FXML
     private void handleMaterias() {
-        // Cargar interfaz de materias (pendiente)
+        cargarVista("/views/materias.fxml");
     }
 
     @FXML
     private void handleEstudiantes() {
-        // Cargar interfaz de estudiantes (pendiente)
+        cargarVista("/views/estudiantes.fxml");
     }
 
     @FXML
     private void handleNotas() {
-        // Cargar interfaz de notas (pendiente)
+        cargarVista("/views/notas.fxml");
     }
 
     @FXML
     private void handleSalir() {
-        // Cerrar sesión y volver al login
+        // Cerrar ventana actual y volver al login
         Stage stage = (Stage) sidebar.getScene().getWindow();
         stage.close();
+        cargarLogin();
+    }
+
+    // Método genérico para cargar vistas
+    private void cargarVista(String fxmlPath) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            // Cerrar la ventana actual
+            ((Stage) sidebar.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Método para cargar el login
+    private void cargarLogin() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Contenido
@@ -80,39 +108,40 @@ public class EstudianteController {
     }
 
     private void configurarAccionesTabla() {
-        colAcciones.setCellFactory(new Callback<>() {
+        colAcciones.setCellFactory(param -> new TableCell<>() {
+            private final Button btnEditar = new Button();
+            private final Button btnEliminar = new Button();
+
+            {
+                // Configurar botón Editar
+                SVGPath iconoEditar = new SVGPath();
+                iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
+                btnEditar.setGraphic(iconoEditar);
+                btnEditar.getStyleClass().addAll("action-button", "edit-button");
+                btnEditar.setOnAction(e -> {
+                    Estudiante estudiante = getTableView().getItems().get(getIndex());
+                    editarEstudiante(estudiante);
+                });
+
+                // Configurar botón Eliminar
+                SVGPath iconoEliminar = new SVGPath();
+                iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
+                btnEliminar.setGraphic(iconoEliminar);
+                btnEliminar.getStyleClass().addAll("action-button", "delete-button");
+                btnEliminar.setOnAction(e -> {
+                    Estudiante estudiante = getTableView().getItems().get(getIndex());
+                    eliminarEstudiante(estudiante);
+                });
+            }
+
             @Override
-            public TableCell<Estudiante, Void> call(final TableColumn<Estudiante, Void> param) {
-                return new TableCell<>() {
-                    private final Button btnEditar = new Button();
-                    private final Button btnEliminar = new Button();
-
-                    {
-                        // Configurar botón Editar
-                        SVGPath iconoEditar = new SVGPath();
-                        iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
-                        btnEditar.setGraphic(iconoEditar);
-                        btnEditar.getStyleClass().addAll("action-button", "edit-button");
-                        btnEditar.setOnAction(e -> editarEstudiante(getTableView().getItems().get(getIndex())));
-
-                        // Configurar botón Eliminar
-                        SVGPath iconoEliminar = new SVGPath();
-                        iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
-                        btnEliminar.setGraphic(iconoEliminar);
-                        btnEliminar.getStyleClass().addAll("action-button", "delete-button");
-                        btnEliminar.setOnAction(e -> eliminarEstudiante(getTableView().getItems().get(getIndex())));
-                    }
-
-                    @Override
-                    protected void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(new HBox(10, btnEditar, btnEliminar));
-                        }
-                    }
-                };
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(new HBox(10, btnEditar, btnEliminar));
+                }
             }
         });
     }

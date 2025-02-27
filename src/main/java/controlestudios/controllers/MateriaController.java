@@ -1,5 +1,6 @@
 package controlestudios.controllers;
 
+import controlestudios.models.Estudiante;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MateriaController {
 
@@ -23,28 +25,55 @@ public class MateriaController {
     @FXML
     private VBox sidebar;
 
-
-
     @FXML
     private void handleMaterias() {
-        // Cargar interfaz de materias (pendiente)
+        cargarVista("/views/materias.fxml");
     }
 
     @FXML
     private void handleEstudiantes() {
-        // Cargar interfaz de estudiantes (pendiente)
+        cargarVista("/views/estudiantes.fxml");
     }
 
     @FXML
     private void handleNotas() {
-        // Cargar interfaz de notas (pendiente)
+        cargarVista("/views/notas.fxml");
     }
 
     @FXML
     private void handleSalir() {
-        // Cerrar sesión y volver al login
+        // Cerrar ventana actual y volver al login
         Stage stage = (Stage) sidebar.getScene().getWindow();
         stage.close();
+        cargarLogin();
+    }
+
+    // Método genérico para cargar vistas
+    private void cargarVista(String fxmlPath) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            // Cerrar la ventana actual
+            ((Stage) sidebar.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Método para cargar el login
+    private void cargarLogin() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -52,6 +81,8 @@ public class MateriaController {
     @FXML
     private TableView<Materia> tablaMaterias;
     private final MateriaDAO materiaDAO = new MateriaDAO();
+
+    @FXML private TableColumn<Materia, Void> colAcciones;
 
     @FXML
     public void initialize() {
@@ -65,45 +96,44 @@ public class MateriaController {
     }
 
     private void configurarAccionesTabla() {
-        @SuppressWarnings("unchecked")
-        TableColumn<Materia, Void> colAcciones = (TableColumn<Materia, Void>) tablaMaterias.getColumns().get(3);
-
         colAcciones.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEditar = crearBotonEditar();
-            private final Button btnEliminar = crearBotonEliminar();
+            private final Button btnEditar = new Button();
+            private final Button btnEliminar = new Button();
 
-            @Override
+            {
+                // Configurar botón Editar
+                SVGPath iconoEditar = new SVGPath();
+                iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
+                btnEditar.setGraphic(iconoEditar);
+                btnEditar.getStyleClass().addAll("action-button", "edit-button");
+                btnEditar.setOnAction(e -> {
+                    Materia materia = (Materia) getTableView().getItems().get(getIndex());
+                    editarMateria(materia);
+                });
+
+                // Configurar botón Eliminar
+                SVGPath iconoEliminar = new SVGPath();
+                iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
+                btnEliminar.setGraphic(iconoEliminar);
+                btnEliminar.getStyleClass().addAll("action-button", "delete-button");
+                btnEliminar.setOnAction(e -> {
+                    Materia materia = (Materia) getTableView().getItems().get(getIndex());
+                    eliminarMateria(materia);
+                });
+            }
+
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || getIndex() >= getTableView().getItems().size()) {
+                if (empty) {
                     setGraphic(null);
                 } else {
-                    Materia materia = getTableView().getItems().get(getIndex());
-                    btnEditar.setOnAction(e -> editarMateria(materia));
-                    btnEliminar.setOnAction(e -> eliminarMateria(materia));
                     setGraphic(new HBox(10, btnEditar, btnEliminar));
                 }
             }
         });
     }
 
-    private Button crearBotonEditar() {
-        Button btn = new Button();
-        SVGPath icono = new SVGPath();
-        icono.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
-        btn.getStyleClass().addAll("action-button", "edit-button");
-        btn.setGraphic(icono);
-        return btn;
-    }
 
-    private Button crearBotonEliminar() {
-        Button btn = new Button();
-        SVGPath icono = new SVGPath();
-        icono.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
-        btn.getStyleClass().addAll("action-button", "delete-button");
-        btn.setGraphic(icono);
-        return btn;
-    }
 
     private boolean mostrarConfirmacion(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

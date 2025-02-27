@@ -1,12 +1,18 @@
 package controlestudios.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class MainMenuController {
 
@@ -17,24 +23,52 @@ public class MainMenuController {
 
     @FXML
     private void handleMaterias() {
-        // Cargar interfaz de materias (pendiente)
+        cargarVista("/views/materias.fxml");
     }
 
     @FXML
     private void handleEstudiantes() {
-        // Cargar interfaz de estudiantes (pendiente)
+        cargarVista("/views/estudiantes.fxml");
     }
 
     @FXML
     private void handleNotas() {
-        // Cargar interfaz de notas (pendiente)
+        cargarVista("/views/notas.fxml");
     }
 
     @FXML
     private void handleSalir() {
-        // Cerrar sesión y volver al login
+        // Cerrar ventana actual y volver al login
         Stage stage = (Stage) sidebar.getScene().getWindow();
-        stage.close(); // Cierra la ventana actual
-        // Aquí puedes cargar nuevamente el login si lo necesitas
+        stage.close();
+        cargarLogin();
+    }
+
+    // Método genérico para cargar vistas
+    private void cargarVista(String fxmlPath) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+            // Cerrar la ventana actual
+            ((Stage) sidebar.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Método para cargar el login
+    private void cargarLogin() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

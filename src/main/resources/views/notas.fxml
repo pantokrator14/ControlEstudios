@@ -98,7 +98,8 @@
                         <TableColumn text="Nota" prefWidth="100">
                             <cellValueFactory><PropertyValueFactory property="valor"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Acciones" prefWidth="120"/>
+                        <TableColumn text="Acciones" prefWidth="120">
+                        </TableColumn>
                     </columns>
                 </TableView>
                 <Label text="No hay notas registradas aún" styleClass="empty-message"
