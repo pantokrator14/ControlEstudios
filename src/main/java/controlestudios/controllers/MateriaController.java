@@ -1,6 +1,8 @@
 package controlestudios.controllers;
 
 import controlestudios.models.Estudiante;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import controlestudios.models.Materia;
 import controlestudios.database.MateriaDAO;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
@@ -69,6 +72,7 @@ public class MateriaController {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
             Stage stage = new Stage();
+            stage.setMaximized(true);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -82,17 +86,24 @@ public class MateriaController {
     private TableView<Materia> tablaMaterias;
     private final MateriaDAO materiaDAO = new MateriaDAO();
 
+
+    @FXML private TableColumn<Materia, String> colNombre;
+    @FXML private TableColumn<Materia, String> colProfesor;
+    @FXML private TableColumn<Materia, String> colDescripcion;
     @FXML private TableColumn<Materia, Void> colAcciones;
+
 
     @FXML
     public void initialize() {
-        cargarDatos();
+        configurarColumnas();
         configurarAccionesTabla();
+        cargarDatos();
     }
 
-    private void cargarDatos() {
-        ObservableList<Materia> materias = materiaDAO.obtenerTodasMaterias();
-        tablaMaterias.setItems(materias); // Asignación correcta
+    private void configurarColumnas() {
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colProfesor.setCellValueFactory(new PropertyValueFactory<>("profesor"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
     }
 
     private void configurarAccionesTabla() {
@@ -101,27 +112,27 @@ public class MateriaController {
             private final Button btnEliminar = new Button();
 
             {
-                // Configurar botón Editar
+                // Configurar botones (código existente)
                 SVGPath iconoEditar = new SVGPath();
                 iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
                 btnEditar.setGraphic(iconoEditar);
                 btnEditar.getStyleClass().addAll("action-button", "edit-button");
                 btnEditar.setOnAction(e -> {
-                    Materia materia = (Materia) getTableView().getItems().get(getIndex());
+                    Materia materia = getTableView().getItems().get(getIndex());
                     editarMateria(materia);
                 });
 
-                // Configurar botón Eliminar
                 SVGPath iconoEliminar = new SVGPath();
                 iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
                 btnEliminar.setGraphic(iconoEliminar);
                 btnEliminar.getStyleClass().addAll("action-button", "delete-button");
                 btnEliminar.setOnAction(e -> {
-                    Materia materia = (Materia) getTableView().getItems().get(getIndex());
+                    Materia materia = getTableView().getItems().get(getIndex());
                     eliminarMateria(materia);
                 });
             }
 
+            @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
@@ -131,6 +142,10 @@ public class MateriaController {
                 }
             }
         });
+    }
+
+    private void cargarDatos() {
+        tablaMaterias.setItems(materiaDAO.obtenerTodasMaterias());
     }
 
 
@@ -187,5 +202,19 @@ public class MateriaController {
             materiaDAO.eliminarMateria(materia.getId());
             cargarDatos();
         }
+    }
+
+    // Propiedad observable para el estado "vacío"
+    private final BooleanProperty tablaVacia = new SimpleBooleanProperty();
+
+
+    // Getter para FXML (requerido)
+    public BooleanProperty tablaVaciaProperty() {
+        return tablaVacia;
+    }
+
+    // Getter tradicional (opcional)
+    public boolean isTablaVacia() {
+        return tablaVacia.get();
     }
 }

@@ -72,6 +72,7 @@ public class NotaController {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
             Stage stage = new Stage();
+            stage.setMaximized(true);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -278,5 +279,18 @@ public class NotaController {
 
     public void setModoBusqueda(boolean modoBusqueda) {
         this.modoBusqueda.set(modoBusqueda);
+    }
+
+    private final BooleanProperty tablaVacia = new SimpleBooleanProperty();
+    
+
+    // Getter para FXML (requerido)
+    public BooleanProperty tablaVaciaProperty() {
+        return tablaVacia;
+    }
+
+    // Getter tradicional (opcional)
+    public boolean isTablaVacia() {
+        return tablaVacia.get();
     }
 }

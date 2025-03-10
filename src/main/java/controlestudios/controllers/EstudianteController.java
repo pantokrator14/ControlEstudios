@@ -1,6 +1,8 @@
 package controlestudios.controllers;
 
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,10 +46,15 @@ public class EstudianteController {
 
     @FXML
     private void handleSalir() {
-        // Cerrar ventana actual y volver al login
-        Stage stage = (Stage) sidebar.getScene().getWindow();
-        stage.close();
-        cargarLogin();
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
+            Stage stage = new Stage();
+            stage.setMaximized(true);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Método genérico para cargar vistas
@@ -71,6 +78,7 @@ public class EstudianteController {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
             Stage stage = new Stage();
+            stage.setMaximized(true);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -206,5 +214,18 @@ public class EstudianteController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
+    }
+
+    private final BooleanProperty tablaVacia = new SimpleBooleanProperty();
+
+
+    // Getter para FXML (requerido)
+    public BooleanProperty tablaVaciaProperty() {
+        return tablaVacia;
+    }
+
+    // Getter tradicional (opcional)
+    public boolean isTablaVacia() {
+        return tablaVacia.get();
     }
 }

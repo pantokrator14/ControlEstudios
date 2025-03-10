@@ -38,10 +38,15 @@ public class MainMenuController {
 
     @FXML
     private void handleSalir() {
-        // Cerrar ventana actual y volver al login
-        Stage stage = (Stage) sidebar.getScene().getWindow();
-        stage.close();
-        cargarLogin();
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/views/login.fxml")));
+            Stage stage = new Stage();
+            stage.setMaximized(true);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Método genérico para cargar vistas

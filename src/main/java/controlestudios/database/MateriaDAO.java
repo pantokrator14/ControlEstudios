@@ -17,7 +17,7 @@ public class MateriaDAO {
 
             pstmt.setString(1, materia.getNombre());
             pstmt.setString(2, materia.getDescripcion());
-            pstmt.setString(3, materia.getNombreProfesor());
+            pstmt.setString(3, materia.getProfesor());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -34,7 +34,7 @@ public class MateriaDAO {
 
             pstmt.setString(1, materia.getNombre());
             pstmt.setString(2, materia.getDescripcion());
-            pstmt.setString(3, materia.getNombreProfesor());
+            pstmt.setString(3, materia.getProfesor());
             pstmt.setInt(4, materia.getId());
             pstmt.executeUpdate();
 
@@ -71,7 +71,7 @@ public class MateriaDAO {
                 Materia materia = new Materia(
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
-                        rs.getString("nombre_profesor")
+                        rs.getString("profesor")
                 );
                 materia.setId(rs.getInt("id"));
                 materias.add(materia);

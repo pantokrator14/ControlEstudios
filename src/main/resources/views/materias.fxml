@@ -74,22 +74,21 @@
             <StackPane>
                 <TableView fx:id="tablaMaterias" styleClass="materias-table">
                     <columns>
-                        <TableColumn text="Nombre" prefWidth="200">
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200">
                             <cellValueFactory><PropertyValueFactory property="nombre"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Profesor" prefWidth="150">
+                        <TableColumn fx:id="colProfesor" text="Profesor" prefWidth="150">
                             <cellValueFactory><PropertyValueFactory property="profesor"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Descripción" prefWidth="300">
+                        <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="300">
                             <cellValueFactory><PropertyValueFactory property="descripcion"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Acciones" prefWidth="120">
-                        </TableColumn>
+                        <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120" />
                     </columns>
                 </TableView>
 
                 <Label text="No hay materias registradas aún" styleClass="empty-message"
-                       visible="${tablaMaterias.items.empty}"/>
+                       visible="${controller.tablaVacia}"/>
             </StackPane>
         </VBox>
     </center>

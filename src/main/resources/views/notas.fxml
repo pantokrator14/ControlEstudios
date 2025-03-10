@@ -92,18 +92,18 @@
                 <!-- Tabla de notas -->
                 <TableView fx:id="tablaNotas" styleClass="notas-table">
                     <columns>
-                        <TableColumn text="Materia" prefWidth="300">
+                        <TableColumn fx:id="colMateria" text="Materia" prefWidth="300">
                             <cellValueFactory><PropertyValueFactory property="nombreMateria"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Nota" prefWidth="100">
+                        <TableColumn fx:id="colNota" text="Nota" prefWidth="100">
                             <cellValueFactory><PropertyValueFactory property="valor"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Acciones" prefWidth="120">
+                        <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120">
                         </TableColumn>
                     </columns>
                 </TableView>
-                <Label text="No hay notas registradas aún" styleClass="empty-message"
-                       visible="${tablaNotas.items.empty}"/>
+                <Label text="No hay materias registradas aún" styleClass="empty-message"
+                       visible="${controller.tablaVacia}"/>
             </VBox>
         </StackPane>
     </center>

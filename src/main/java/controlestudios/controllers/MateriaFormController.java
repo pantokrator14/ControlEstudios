@@ -26,7 +26,7 @@ public class MateriaFormController {
         this.materia = materia;
         if (materia != null) {
             txtNombre.setText(materia.getNombre());
-            txtProfesor.setText(materia.getNombreProfesor());
+            txtProfesor.setText(materia.getProfesor());
             txtDescripcion.setText(materia.getDescripcion());
         }
     }
@@ -55,7 +55,7 @@ public class MateriaFormController {
             materia = new Materia();
         }
         materia.setNombre(txtNombre.getText().trim());
-        materia.setNombreProfesor(txtProfesor.getText().trim());
+        materia.setProfesor(txtProfesor.getText().trim());
         materia.setDescripcion(txtDescripcion.getText().trim());
         guardado = true;
         dialogStage.close();

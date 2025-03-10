@@ -22,6 +22,6 @@
 
     <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER_RIGHT">
         <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar"/>
-        <Button text="Guardar" styleClass="save-button" onAction="#handleGuardar"/>
+        <Button fx:id="saveButton" text="Guardar" styleClass="save-button" onAction="#handleGuardar"/>
     </HBox>
 </GridPane>

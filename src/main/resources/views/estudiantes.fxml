@@ -10,7 +10,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controlestudios.controllers.EstudianteController"
-            stylesheets="@../styles/main_menu.css">
+            stylesheets="@../styles/materias.css">
 
     <left>
         <VBox fx:id="sidebar" styleClass="sidebar" spacing="20" prefWidth="200">
@@ -69,24 +69,24 @@
                 <TableView fx:id="tablaEstudiantes" styleClass="estudiantes-table">
                     <columns>
                         <!-- Usar cellValueFactory en lugar de property -->
-                        <TableColumn text="Nombre" prefWidth="250">
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="250">
                             <cellValueFactory><PropertyValueFactory property="nombreCompleto"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Cédula" prefWidth="120">
+                        <TableColumn fx:id="colCedula" text="Cédula" prefWidth="120">
                             <cellValueFactory><PropertyValueFactory property="cedula"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Fecha Nacimiento" prefWidth="150">
+                        <TableColumn fx:id="colFechaNacimiento" text="Fecha Nacimiento" prefWidth="150">
                             <cellValueFactory><PropertyValueFactory property="fechaNacimiento"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Sección" prefWidth="100">
+                        <TableColumn fx:id="colSeccion" text="Sección" prefWidth="100">
                             <cellValueFactory><PropertyValueFactory property="seccion"/></cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Acciones" prefWidth="120">
+                        <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120">
                         </TableColumn>
                     </columns>
                 </TableView>
-                <Label text="No hay estudiantes registrados" styleClass="empty-message"
-                       visible="${tablaEstudiantes.items.empty}"/>
+                <Label text="No hay materias registradas aún" styleClass="empty-message"
+                       visible="${controller.tablaVacia}"/>
             </StackPane>
         </VBox>
     </center>

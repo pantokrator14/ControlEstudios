@@ -19,8 +19,12 @@ public class EstudianteDAO {
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            LocalDate fechaNacimiento = estudiante.getFechaNacimiento();
+            Date fechaSql = Date.valueOf(fechaNacimiento); // Convierte LocalDate a java.sql.Date
+
+
             pstmt.setString(1, estudiante.getNombreCompleto());
-            pstmt.setString(2, estudiante.getFechaNacimiento().toString()); // SQLite almacena fechas como TEXT
+            pstmt.setDate(4, fechaSql);
             pstmt.setString(3, estudiante.getCedula());
             pstmt.setString(4, estudiante.getSeccion());
             pstmt.executeUpdate();
@@ -91,19 +95,24 @@ public class EstudianteDAO {
     }
 
     public Estudiante buscarPorCedula(String cedula) {
-        String query = "SELECT * FROM estudiantes WHERE cedula = ?";
-        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+        String sql = "SELECT * FROM estudiantes WHERE cedula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, cedula);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return new Estudiante(
-                        rs.getInt("id"),
-                        rs.getString("nombre_completo"),
-                        rs.getString("cedula"),
-                        rs.getDate("fecha_nacimiento").toLocalDate(),
-                        rs.getString("seccion")
-                );
+                Estudiante estudiante = new Estudiante();
+                estudiante.setId(rs.getInt("id"));
+                estudiante.setNombreCompleto(rs.getString("nombre_completo"));
+                estudiante.setCedula(rs.getString("cedula"));
+
+                // Corrección aquí:
+                String fechaStr = rs.getString("fecha_nacimiento");
+                LocalDate fechaNacimiento = LocalDate.parse(fechaStr);
+                estudiante.setFechaNacimiento(fechaNacimiento);
+
+                estudiante.setSeccion(rs.getString("seccion"));
+                return estudiante;
             }
         } catch (SQLException e) {
             e.printStackTrace();
