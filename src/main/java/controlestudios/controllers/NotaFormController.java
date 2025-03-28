@@ -17,8 +17,42 @@ public class NotaFormController {
     private Nota nota;
     private boolean guardado = false;
 
+    // ============= INITIALIZATION =============
+    @FXML
+    private void initialize() {
+        configurarComboBoxMaterias(); // Configurar cómo se muestran las materias
+        agregarListenersValidacion(); // Validación en tiempo real
+    }
+
+    private void configurarComboBoxMaterias() {
+        // Configurar cómo se muestran las materias en la lista desplegable
+        cbMaterias.setCellFactory(param -> new ListCell<Materia>() {
+            @Override
+            protected void updateItem(Materia materia, boolean empty) {
+                super.updateItem(materia, empty);
+                setText(empty || materia == null ? null : materia.getNombre());
+            }
+        });
+
+        // Configurar cómo se muestra la materia seleccionada
+        cbMaterias.setButtonCell(new ListCell<Materia>() {
+            @Override
+            protected void updateItem(Materia materia, boolean empty) {
+                super.updateItem(materia, empty);
+                setText(empty || materia == null ? null : materia.getNombre());
+            }
+        });
+    }
+
+    private void agregarListenersValidacion() {
+        txtNota.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
+        cbMaterias.valueProperty().addListener((obs, oldVal, newVal) -> validarCampos());
+        validarCampos(); // Validación inicial
+    }
+
+    // ============= MÉTODOS PÚBLICOS =============
     public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
+        this.dialogStage = dialogStage; // ¡Corrección clave para evitar NullPointerException!
     }
 
     public void setMaterias(ObservableList<Materia> materias) {
@@ -33,18 +67,13 @@ public class NotaFormController {
     public void setNota(Nota nota) {
         this.nota = nota;
         if (nota != null) {
+            // Seleccionar la materia correspondiente en el ComboBox
             cbMaterias.getSelectionModel().select(new Materia(nota.getIdMateria(), "", "", ""));
             txtNota.setText(String.valueOf(nota.getValor()));
         }
     }
 
-    @FXML
-    private void initialize() {
-        txtNota.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
-        cbMaterias.valueProperty().addListener((obs, oldVal, newVal) -> validarCampos());
-        validarCampos();
-    }
-
+    // ============= LÓGICA DE VALIDACIÓN =============
     private void validarCampos() {
         boolean valido = cbMaterias.getValue() != null
                 && txtNota.getText().matches("^[0-9]{1,2}(\\.[0-9]{1,2})?$")
@@ -53,6 +82,7 @@ public class NotaFormController {
         btnGuardar.setDisable(!valido);
     }
 
+    // ============= MANEJADORES DE EVENTOS =============
     @FXML
     private void handleGuardar() {
         if (nota == null) nota = new Nota();
@@ -60,7 +90,7 @@ public class NotaFormController {
         nota.setIdMateria(cbMaterias.getValue().getId());
         nota.setValor(Double.parseDouble(txtNota.getText()));
         guardado = true;
-        dialogStage.close();
+        dialogStage.close(); // Ya no hay NullPointerException porque dialogStage está inicializado
     }
 
     @FXML
@@ -68,6 +98,7 @@ public class NotaFormController {
         dialogStage.close();
     }
 
+    // ============= GETTERS =============
     public Nota getNota() {
         return nota;
     }

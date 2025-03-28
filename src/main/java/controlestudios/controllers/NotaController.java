@@ -184,6 +184,7 @@ public class NotaController {
             controller.setMaterias(materiaDAO.obtenerTodasMaterias());
 
             Stage stage = new Stage();
+            controller.setDialogStage(stage);
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

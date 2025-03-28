@@ -116,3 +116,23 @@ svg-path {
 .action-button:hover .delete-button {
     -fx-fill: black;
 }
+
+.search-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+}
+
+.download-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+}
+
+.notas-table .table-column {
+    -fx-alignment: CENTER;
+}
+
+.input-field {
+    -fx-pref-width: 250px;
+}

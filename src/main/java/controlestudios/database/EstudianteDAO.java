@@ -14,23 +14,16 @@ public class EstudianteDAO {
 
     // Guardar un estudiante
     public void guardarEstudiante(Estudiante estudiante) {
-        String sql = "INSERT INTO estudiantes (nombre_completo, fecha_nacimiento, cedula, seccion) VALUES (?, ?, ?, ?)";
-
-        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
+        String sql = "INSERT INTO estudiantes (nombre_completo, cedula, fecha_nacimiento, seccion) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            LocalDate fechaNacimiento = estudiante.getFechaNacimiento();
-            Date fechaSql = Date.valueOf(fechaNacimiento); // Convierte LocalDate a java.sql.Date
-
-
             pstmt.setString(1, estudiante.getNombreCompleto());
-            pstmt.setDate(4, fechaSql);
-            pstmt.setString(3, estudiante.getCedula());
+            pstmt.setString(2, estudiante.getCedula());
+            pstmt.setDate(3, Date.valueOf(estudiante.getFechaNacimiento())); // Conversión a java.sql.Date
             pstmt.setString(4, estudiante.getSeccion());
             pstmt.executeUpdate();
-
         } catch (SQLException e) {
-            System.err.println("Error al guardar estudiante: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -38,11 +31,11 @@ public class EstudianteDAO {
     public void actualizarEstudiante(Estudiante estudiante) {
         String sql = "UPDATE estudiantes SET nombre_completo = ?, fecha_nacimiento = ?, cedula = ?, seccion = ? WHERE id = ?";
 
-        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, estudiante.getNombreCompleto());
-            pstmt.setString(2, estudiante.getFechaNacimiento().toString());
+            pstmt.setDate(2, Date.valueOf(estudiante.getFechaNacimiento())); // Corrección aquí
             pstmt.setString(3, estudiante.getCedula());
             pstmt.setString(4, estudiante.getSeccion());
             pstmt.setInt(5, estudiante.getId());
@@ -65,7 +58,7 @@ public class EstudianteDAO {
             while (rs.next()) {
                 Estudiante estudiante = new Estudiante(
                         rs.getString("nombre_completo"),
-                        LocalDate.parse(rs.getString("fecha_nacimiento")),
+                        rs.getDate("fecha_nacimiento").toLocalDate(),
                         rs.getString("cedula"),
                         rs.getString("seccion")
                 );
@@ -106,10 +99,8 @@ public class EstudianteDAO {
                 estudiante.setNombreCompleto(rs.getString("nombre_completo"));
                 estudiante.setCedula(rs.getString("cedula"));
 
-                // Corrección aquí:
-                String fechaStr = rs.getString("fecha_nacimiento");
-                LocalDate fechaNacimiento = LocalDate.parse(fechaStr);
-                estudiante.setFechaNacimiento(fechaNacimiento);
+                Date fechaSql = rs.getDate("fecha_nacimiento"); // Obtener como Date
+                estudiante.setFechaNacimiento(fechaSql.toLocalDate()); // Convertir a LocalDate
 
                 estudiante.setSeccion(rs.getString("seccion"));
                 return estudiante;

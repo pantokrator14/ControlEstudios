@@ -66,7 +66,7 @@
             <Line endX="1000" stroke="#e0e0e0"/>
 
             <StackPane>
-                <TableView fx:id="tablaEstudiantes" styleClass="estudiantes-table">
+                <TableView fx:id="tablaEstudiantes" styleClass="materias-table">
                     <columns>
                         <!-- Usar cellValueFactory en lugar de property -->
                         <TableColumn fx:id="colNombre" text="Nombre" prefWidth="250">

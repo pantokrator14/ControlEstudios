@@ -26,6 +26,9 @@ public class EstudianteFormController {
         txtSeccion.textProperty().addListener((obs, oldVal, newVal) -> validarCampos());
         dpFechaNacimiento.valueProperty().addListener((obs, oldVal, newVal) -> validarCampos());
         validarCampos();
+        if (btnGuardar != null) {
+            validarCampos();
+        }
     }
 
     private void validarCampos() {

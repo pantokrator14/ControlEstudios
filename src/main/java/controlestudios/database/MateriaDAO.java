@@ -10,7 +10,7 @@ public class MateriaDAO {
 
     // Guardar materia
     public void guardarMateria(Materia materia) {
-        String sql = "INSERT INTO materias (nombre, descripcion, nombre_profesor) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO materias (nombre, descripcion, profesor) VALUES (?, ?, ?)";
 
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -27,7 +27,7 @@ public class MateriaDAO {
 
     // Actualizar materia
     public void actualizarMateria(Materia materia) {
-        String sql = "UPDATE materias SET nombre = ?, descripcion = ?, nombre_profesor = ? WHERE id = ?";
+        String sql = "UPDATE materias SET nombre = ?, descripcion = ?, profesor = ? WHERE id = ?";
 
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

@@ -15,7 +15,7 @@
     <TextField fx:id="txtCedula" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
     <Label text="Fecha Nacimiento:" GridPane.rowIndex="2"/>
-    <DatePicker fx:id="dpFechaNacimiento" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <DatePicker fx:id="dpFechaNacimiento" promptText="Fecha de nacimiento" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
     <Label text="Sección:" GridPane.rowIndex="3"/>
     <TextField fx:id="txtSeccion" GridPane.rowIndex="3" GridPane.columnIndex="1"/>

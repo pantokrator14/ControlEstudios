@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS materias (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
     descripcion TEXT NOT NULL,
-    nombre_profesor TEXT NOT NULL
+    profesor TEXT NOT NULL
 );
 
 -- Tabla Notas

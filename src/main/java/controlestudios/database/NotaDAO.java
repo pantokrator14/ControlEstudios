@@ -31,8 +31,8 @@ public class NotaDAO {
     // Obtener todas las notas de un estudiante
     public ObservableList<Nota> obtenerNotasPorEstudiante(int estudianteId) {
         String query = "SELECT n.*, m.nombre as nombre_materia FROM notas n "
-                + "JOIN materias m ON n.id_materia = m.id "
-                + "WHERE n.id_estudiante = ?";
+                + "JOIN materias m ON n.materia_id = m.id "
+                + "WHERE n.estudiante_id = ?";
         ObservableList<Nota> notas = FXCollections.observableArrayList();
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

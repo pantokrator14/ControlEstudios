@@ -9,7 +9,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controlestudios.controllers.NotaController"
-            stylesheets="@../styles/main_menu.css">
+            stylesheets="@../styles/materias.css">
 
     <!-- Sidebar -->
     <left>
@@ -90,7 +90,7 @@
                 <Line endX="1000" stroke="#e0e0e0"/>
 
                 <!-- Tabla de notas -->
-                <TableView fx:id="tablaNotas" styleClass="notas-table">
+                <TableView fx:id="tablaNotas" styleClass="materias-table">
                     <columns>
                         <TableColumn fx:id="colMateria" text="Materia" prefWidth="300">
                             <cellValueFactory><PropertyValueFactory property="nombreMateria"/></cellValueFactory>
