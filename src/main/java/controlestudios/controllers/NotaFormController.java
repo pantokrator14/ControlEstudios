@@ -52,7 +52,7 @@ public class NotaFormController {
 
     // ============= MÉTODOS PÚBLICOS =============
     public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage; // ¡Corrección clave para evitar NullPointerException!
+        this.dialogStage = dialogStage;
     }
 
     public void setMaterias(ObservableList<Materia> materias) {
@@ -67,8 +67,11 @@ public class NotaFormController {
     public void setNota(Nota nota) {
         this.nota = nota;
         if (nota != null) {
-            // Seleccionar la materia correspondiente en el ComboBox
-            cbMaterias.getSelectionModel().select(new Materia(nota.getIdMateria(), "", "", ""));
+            // Buscar la materia en la lista del ComboBox usando el ID
+            cbMaterias.getItems().stream()
+                    .filter(m -> m.getId() == nota.getIdMateria())
+                    .findFirst()
+                    .ifPresent(m -> cbMaterias.getSelectionModel().select(m)); // Seleccionar la materia existente
             txtNota.setText(String.valueOf(nota.getValor()));
         }
     }

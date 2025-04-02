@@ -34,14 +34,14 @@ public class NotaDAO {
                 + "JOIN materias m ON n.materia_id = m.id "
                 + "WHERE n.estudiante_id = ?";
         ObservableList<Nota> notas = FXCollections.observableArrayList();
-        try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, estudianteId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Nota nota = new Nota();
                 nota.setId(rs.getInt("id"));
-                nota.setValor(rs.getDouble("nota"));
+                nota.setValor(rs.getDouble("calificacion")); // Usar "calificacion"
                 nota.setNombreMateria(rs.getString("nombre_materia"));
                 notas.add(nota);
             }
