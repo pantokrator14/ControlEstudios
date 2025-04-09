@@ -7,7 +7,9 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NotaDAO {
 
@@ -80,5 +82,53 @@ public class NotaDAO {
         } catch (SQLException e) {
             System.err.println("Error al eliminar nota: " + e.getMessage());
         }
+    }
+
+    public Map<String, Double> getPromediosPorMateria(String cedulaEstudiante) {
+        Map<String, Double> promedios = new HashMap<>();
+        String query = "SELECT m.nombre, AVG(n.nota) as promedio "
+                + "FROM notas n "
+                + "JOIN materias m ON n.id_materia = m.id "
+                + "WHERE n.id_estudiante = (SELECT id FROM estudiantes WHERE cedula = ?) "
+                + "GROUP BY m.nombre";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, cedulaEstudiante);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String materia = rs.getString("nombre");
+                double promedio = rs.getDouble("promedio");
+                promedios.put(materia, Math.round(promedio * 100.0) / 100.0);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error calculando promedios: " + e.getMessage());
+        }
+        return promedios;
+    }
+
+    public double getPromedioGeneral(String cedulaEstudiante) {
+        String query = "SELECT AVG(nota) as promedio_general "
+                + "FROM notas "
+                + "WHERE id_estudiante = (SELECT id FROM estudiantes WHERE cedula = ?)";
+        double promedio = 0.0;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, cedulaEstudiante);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                promedio = rs.getDouble("promedio_general");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error calculando promedio general: " + e.getMessage());
+        }
+        return Math.round(promedio * 100.0) / 100.0;
     }
 }

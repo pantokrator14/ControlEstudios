@@ -1,12 +1,16 @@
 package controlestudios.controllers;
 
+import controlestudios.utils.PDFGenerator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -17,7 +21,11 @@ import javafx.stage.Stage;
 import controlestudios.models.*;
 import controlestudios.database.*;
 import javafx.collections.ObservableList;
+
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 public class NotaController {
@@ -197,6 +205,25 @@ public class NotaController {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void generarBoletin(ActionEvent event) {
+        if (estudianteActual == null) return;
+
+        // Obtener notas del estudiante
+        ObservableList<Nota> notas = notaDAO.obtenerNotasPorEstudiante(estudianteActual.getId());
+
+        Map<String, Double> promedios = notaDAO.getPromediosPorMateria(estudianteActual.getCedula());
+        double promedioGeneral = notaDAO.getPromedioGeneral(estudianteActual.getCedula());
+
+        PDFGenerator.generarBoletin(estudianteActual, promedios, promedioGeneral);
+
+        // Opcional: Abrir el PDF automáticamente
+        try {
+            Desktop.getDesktop().open(new File("boletin.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     //============= DATABASE OPERATIONS =============
     private void cargarNotasEstudiante() {
@@ -295,4 +322,6 @@ public class NotaController {
     public boolean isTablaVacia() {
         return tablaVacia.get();
     }
+
+
 }

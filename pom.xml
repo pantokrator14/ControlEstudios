@@ -23,6 +23,22 @@
         <version>3.43.0.0</version>
     </dependency>
 
+    <!-- PDF generator -->
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>kernel</artifactId>
+        <version>7.2.5</version>
+    </dependency>
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>io</artifactId>
+        <version>7.2.5</version>
+    </dependency>
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>layout</artifactId>
+        <version>7.2.5</version>
+    </dependency>
 
     <!-- Logging -->
     <!-- SLF4J API (versión 2.x) -->
