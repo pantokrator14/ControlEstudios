@@ -1,144 +1,127 @@
 package controlestudios.utils;
 
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.colors.ColorConstants;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.properties.HorizontalAlignment;
-import com.itextpdf.layout.properties.TextAlignment;
 import controlestudios.models.Estudiante;
+import controlestudios.models.Nota;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Map;
+import java.util.List;
 
 public class PDFGenerator {
-    private static final float[] COLUMN_WIDTHS = {3, 1};
-    private static final PdfFont TITLE_FONT;
-    private static final PdfFont HEADER_FONT;
-    private static final PdfFont BODY_FONT;
 
-    static {
-        try {
-            TITLE_FONT = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA_BOLD);
-            HEADER_FONT = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA);
-            BODY_FONT = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA);
+    public static void generarBoletaNotas(Estudiante estudiante, List<Nota> notas, String rutaLogo) {
+        String dest = "boleta_" + estudiante.getCedula() + ".pdf";
+
+        try (PDDocument doc = new PDDocument()) {
+            PDPage page = new PDPage(PDRectangle.A4);
+            doc.addPage(page);
+
+            PDPageContentStream content = new PDPageContentStream(doc, page);
+
+            // --- Agregar logo ---
+            PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, doc);
+            float logoWidth = 100;
+            float logoHeight = (logoWidth * logo.getHeight()) / logo.getWidth();
+            content.drawImage(logo, 50, 750 - logoHeight, logoWidth, logoHeight);
+
+            // --- Título del plantel ---
+            content.beginText();
+            content.setFont(PDType1Font.HELVETICA_BOLD, 16);
+            content.newLineAtOffset(50, 720);
+            content.showText("COLEGIO NACIONAL XYZ");
+            content.endText();
+
+            // --- Datos del estudiante ---
+            content.beginText();
+            content.setFont(PDType1Font.HELVETICA, 12);
+            content.newLineAtOffset(50, 680);
+            content.showText("Nombre: " + estudiante.getNombreCompleto());
+            content.newLineAtOffset(0, -20);
+            content.showText("Cédula: " + estudiante.getCedula());
+            content.newLineAtOffset(0, -20);
+            content.showText("Sección: " + estudiante.getSeccion());
+            content.endText();
+
+            // --- Tabla de notas ---
+            float margin = 50;
+            float yPosition = 600;
+            float rowHeight = 20;
+            float tableWidth = page.getMediaBox().getWidth() - 2 * margin;
+
+            // Encabezados de la tabla
+            drawTableHeader(content, margin, yPosition, tableWidth, rowHeight);
+            yPosition -= rowHeight;
+
+            // Filas de notas
+            double sumaTotal = 0;
+            for (Nota nota : notas) {
+                drawTableRow(content, margin, yPosition, tableWidth, rowHeight, nota);
+                yPosition -= rowHeight;
+                sumaTotal += nota.getValor();
+            }
+
+            // --- Promedio general ---
+            content.beginText();
+            content.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            content.newLineAtOffset(margin, yPosition - 30);
+            content.showText("Promedio General: " + String.format("%.2f", sumaTotal / notas.size()));
+            content.endText();
+
+            content.close();
+            doc.save(dest);
         } catch (IOException e) {
-            throw new RuntimeException("Error inicializando fuentes", e);
+            e.printStackTrace();
         }
     }
 
-    public static void generarBoletin(Estudiante estudiante, Map<String, Double> promediosMaterias, double promedioGeneral) {
-        String fileName = "boletines/Boletin_" + estudiante.getCedula() + ".pdf";
-        new File("boletines").mkdirs();
+    private static void drawTableHeader(PDPageContentStream content, float x, float y, float width, float height) throws IOException {
+        content.setFont(PDType1Font.HELVETICA_BOLD, 12);
+        content.setLineWidth(1f);
 
-        try (PdfWriter writer = new PdfWriter(new FileOutputStream(fileName));
-             PdfDocument pdfDoc = new PdfDocument(writer);
-             Document document = new Document(pdfDoc, PageSize.A4)) {
-
-            document.setMargins(40, 40, 50, 50);
-
-            // Agregar logo
-            URL imageUrl = PDFGenerator.class.getResource("/images/logo.png");
-            assert imageUrl != null;
-            ImageData imageData = ImageDataFactory.create(imageUrl);
-            Image logo = new Image(imageData);
-            logo.scaleToFit(120, 120);
-            logo.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(logo);
-
-            // Encabezado institucional
-            addInstitutionalHeader(document);
-
-            // Título del documento
-            Paragraph titulo = new Paragraph("BOLETÍN DE CALIFICACIONES\n\n")
-                    .setFont(TITLE_FONT)
-                    .setFontSize(14)
-                    .setTextAlignment(TextAlignment.CENTER);
-            document.add(titulo);
-
-            // Datos del estudiante
-            addStudentInfo(document, estudiante, promedioGeneral);
-
-            // Tabla de calificaciones
-            addGradesTable(document, promediosMaterias);
-
-            // Firma del director
-            addDirectorSignature(document);
-
-        } catch (FileNotFoundException e) {  // Manejo específico para archivo no encontrado
-            System.err.println("Error: Archivo no encontrado");
-        } catch (IOException e) {  // Manejo general para otros errores de E/S
-            System.err.println("Error general de E/S");
-        }
-    }
-
-    private static void addInstitutionalHeader(Document document) {
-        Paragraph header = new Paragraph()
-                .setFont(HEADER_FONT)
-                .setFontSize(10)
-                .add("REPÚBLICA BOLIVARIANA DE VENEZUELA\n")
-                .add("MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN\n")
-                .add("UNIDAD EDUCATIVA NACIONAL CÉSAR AUGUSTO AGREDA\n\n")
-                .setTextAlignment(TextAlignment.CENTER);
-        document.add(header);
-    }
-
-    private static void addStudentInfo(Document document, Estudiante estudiante, double promedioGeneral) {
-        Paragraph studentInfo = new Paragraph()
-                .setFont(BODY_FONT)
-                .setFontSize(12)
-                .add("Nombre: " + estudiante.getNombreCompleto() + "\n")
-                .add("Cédula: " + estudiante.getCedula() + "\n")
-                .add("Sección: " + estudiante.getSeccion() + "\n")
-                .add(String.format("Promedio General: %.2f\n\n", promedioGeneral));
-        document.add(studentInfo);
-    }
-
-    private static void addGradesTable(Document document, Map<String, Double> promediosMaterias) {
-        Table table = new Table(COLUMN_WIDTHS);
-        table.setWidth(100);
+        // Dibujar celdas
+        String[] headers = {"Materia", "Nota", "Promedio"};
+        float colWidth = width / headers.length;
 
         // Encabezados
-        addTableHeaderCell(table, "MATERIA");
-        addTableHeaderCell(table, "PROMEDIO");
+        for (int i = 0; i < headers.length; i++) {
+            content.beginText();
+            content.newLineAtOffset(x + (i * colWidth) + 5, y - 15);
+            content.showText(headers[i]);
+            content.endText();
+        }
 
-        // Datos
-        promediosMaterias.forEach((materia, promedio) -> {
-            table.addCell(new Cell().add(new Paragraph(materia).setFont(BODY_FONT)));
-            table.addCell(new Cell().add(new Paragraph(String.format("%.2f", promedio)).setFont(BODY_FONT)));
-        });
-
-        document.add(table);
+        // Líneas de la tabla
+        content.moveTo(x, y);
+        content.lineTo(x + width, y);
+        content.stroke();
     }
 
-    private static void addTableHeaderCell(Table table, String text) {
-        Cell cell = new Cell()
-                .add(new Paragraph(text).setFont(BODY_FONT))
-                .setBackgroundColor(ColorConstants.LIGHT_GRAY)
-                .setTextAlignment(TextAlignment.CENTER);
-        table.addCell(cell);
-    }
+    private static void drawTableRow(PDPageContentStream content, float x, float y, float width, float height, Nota nota) throws IOException {
+        content.setFont(PDType1Font.HELVETICA, 12);
+        float colWidth = width / 3;
 
-    private static void addDirectorSignature(Document document) {
-        Paragraph firma = new Paragraph()
-                .add("\n\n\n_____________________________\n")
-                .add("Lcdo. Gustavo Curiel\n")
-                .add("Director del Plantel\n")
-                .setTextAlignment(TextAlignment.RIGHT)
-                .setFont(BODY_FONT);
-        document.add(firma);
+        // Contenido de las celdas
+        String[] rowData = {
+                nota.getNombreMateria(),
+                String.valueOf(nota.getValor()),
+                "N/A" // Aquí iría el promedio por materia si lo calculas
+        };
+
+        for (int i = 0; i < rowData.length; i++) {
+            content.beginText();
+            content.newLineAtOffset(x + (i * colWidth) + 5, y - 15);
+            content.showText(rowData[i]);
+            content.endText();
+        }
+
+        // Línea inferior de la fila
+        content.moveTo(x, y - height);
+        content.lineTo(x + width, y - height);
+        content.stroke();
     }
 }

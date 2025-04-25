@@ -24,20 +24,11 @@
     </dependency>
 
     <!-- PDF generator -->
+
     <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>kernel</artifactId>
-        <version>7.2.5</version>
-    </dependency>
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>io</artifactId>
-        <version>7.2.5</version>
-    </dependency>
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>layout</artifactId>
-        <version>7.2.5</version>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>pdfbox</artifactId>
+        <version>3.0.1</version>
     </dependency>
 
     <!-- Logging -->
@@ -65,5 +56,13 @@
             <version>3.13.0</version>
         </plugin>
     </plugins>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*.sql</include> <!-- Incluye todos los archivos SQL -->
+            </includes>
+        </resource>
+    </resources>
 </build>
 </project>
