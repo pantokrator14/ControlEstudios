@@ -19,6 +19,7 @@ import controlestudios.database.EstudianteDAO;
 import controlestudios.controllers.EstudianteFormController;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -121,21 +122,24 @@ public class EstudianteController {
             private final Button btnEliminar = new Button();
 
             {
-                // Configurar botón Editar
-                SVGPath iconoEditar = new SVGPath();
-                iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
+                // Ícono Editar
+                FontIcon iconoEditar = new FontIcon("fas-pencil-alt");
+                iconoEditar.setIconSize(16);
                 btnEditar.setGraphic(iconoEditar);
                 btnEditar.getStyleClass().addAll("action-button", "edit-button");
+
+                // Ícono Eliminar
+                FontIcon iconoEliminar = new FontIcon("fas-trash-alt");
+                iconoEliminar.setIconSize(16);
+                btnEliminar.setGraphic(iconoEliminar);
+                btnEliminar.getStyleClass().addAll("action-button", "delete-button");
+
+                // Eventos
                 btnEditar.setOnAction(e -> {
                     Estudiante estudiante = getTableView().getItems().get(getIndex());
                     editarEstudiante(estudiante);
                 });
 
-                // Configurar botón Eliminar
-                SVGPath iconoEliminar = new SVGPath();
-                iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
-                btnEliminar.setGraphic(iconoEliminar);
-                btnEliminar.getStyleClass().addAll("action-button", "delete-button");
                 btnEliminar.setOnAction(e -> {
                     Estudiante estudiante = getTableView().getItems().get(getIndex());
                     eliminarEstudiante(estudiante);
@@ -145,11 +149,7 @@ public class EstudianteController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(new HBox(10, btnEditar, btnEliminar));
-                }
+                setGraphic(empty ? null : new HBox(10, btnEditar, btnEliminar));
             }
         });
     }

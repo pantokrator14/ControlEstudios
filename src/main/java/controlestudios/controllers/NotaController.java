@@ -15,12 +15,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.SVGPath;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import controlestudios.models.*;
 import controlestudios.database.*;
 import javafx.collections.ObservableList;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.awt.*;
 import java.io.File;
@@ -133,21 +133,24 @@ public class NotaController {
             private final Button btnEliminar = new Button();
 
             {
-                // Configurar botón Editar
-                SVGPath iconoEditar = new SVGPath();
-                iconoEditar.setContent("M12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84z");
+                // Ícono Editar
+                FontIcon iconoEditar = new FontIcon("fas-pencil-alt");
+                iconoEditar.setIconSize(16);
                 btnEditar.setGraphic(iconoEditar);
                 btnEditar.getStyleClass().addAll("action-button", "edit-button");
+
+                // Ícono Eliminar
+                FontIcon iconoEliminar = new FontIcon("fas-trash-alt");
+                iconoEliminar.setIconSize(16);
+                btnEliminar.setGraphic(iconoEliminar);
+                btnEliminar.getStyleClass().addAll("action-button", "delete-button");
+
+                // Eventos
                 btnEditar.setOnAction(e -> {
                     Nota nota = getTableView().getItems().get(getIndex());
                     editarNota(nota);
                 });
 
-                // Configurar botón Eliminar
-                SVGPath iconoEliminar = new SVGPath();
-                iconoEliminar.setContent("M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z");
-                btnEliminar.setGraphic(iconoEliminar);
-                btnEliminar.getStyleClass().addAll("action-button", "delete-button");
                 btnEliminar.setOnAction(e -> {
                     Nota nota = getTableView().getItems().get(getIndex());
                     eliminarNota(nota);
@@ -157,11 +160,7 @@ public class NotaController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(new HBox(10, btnEditar, btnEliminar));
-                }
+                setGraphic(empty ? null : new HBox(10, btnEditar, btnEliminar));
             }
         });
     }
@@ -206,23 +205,20 @@ public class NotaController {
         }
     }
     @FXML
-    private void generarBoletin(ActionEvent event) {
+    private void handleDescargarBoleta() {
         if (estudianteActual == null) return;
 
-        // Obtener notas del estudiante
         ObservableList<Nota> notas = notaDAO.obtenerNotasPorEstudiante(estudianteActual.getId());
+        String rutaLogo = "src/main/resources/images/logo.png"; // Ajusta según tu estructura
 
-        Map<String, Double> promedios = notaDAO.getPromediosPorMateria(estudianteActual.getCedula());
-        double promedioGeneral = notaDAO.getPromedioGeneral(estudianteActual.getCedula());
+        PDFGenerator.generarBoletaNotas(estudianteActual, notas, rutaLogo);
 
-        PDFGenerator.generarBoletin(estudianteActual, promedios, promedioGeneral);
-
-        // Opcional: Abrir el PDF automáticamente
-        try {
-            Desktop.getDesktop().open(new File("boletin.pdf"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Mostrar mensaje de éxito
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Boleta generada");
+        alert.setHeaderText("Descarga exitosa");
+        alert.setContentText("El PDF se guardó en: " + System.getProperty("user.dir"));
+        alert.showAndWait();
     }
 
     //============= DATABASE OPERATIONS =============

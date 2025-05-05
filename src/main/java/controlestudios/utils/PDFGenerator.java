@@ -7,6 +7,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import java.io.IOException;
@@ -31,14 +32,14 @@ public class PDFGenerator {
 
             // --- Título del plantel ---
             content.beginText();
-            content.setFont(PDType1Font.HELVETICA_BOLD, 16);
+            content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 16);
             content.newLineAtOffset(50, 720);
-            content.showText("COLEGIO NACIONAL XYZ");
+            content.showText("COLEGIO NACIONAL CÉSAR AUGUSTO ÁGREDA");
             content.endText();
 
             // --- Datos del estudiante ---
             content.beginText();
-            content.setFont(PDType1Font.HELVETICA, 12);
+            content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
             content.newLineAtOffset(50, 680);
             content.showText("Nombre: " + estudiante.getNombreCompleto());
             content.newLineAtOffset(0, -20);
@@ -67,7 +68,7 @@ public class PDFGenerator {
 
             // --- Promedio general ---
             content.beginText();
-            content.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 12);
             content.newLineAtOffset(margin, yPosition - 30);
             content.showText("Promedio General: " + String.format("%.2f", sumaTotal / notas.size()));
             content.endText();
@@ -80,7 +81,7 @@ public class PDFGenerator {
     }
 
     private static void drawTableHeader(PDPageContentStream content, float x, float y, float width, float height) throws IOException {
-        content.setFont(PDType1Font.HELVETICA_BOLD, 12);
+        content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
         content.setLineWidth(1f);
 
         // Dibujar celdas
@@ -102,7 +103,7 @@ public class PDFGenerator {
     }
 
     private static void drawTableRow(PDPageContentStream content, float x, float y, float width, float height, Nota nota) throws IOException {
-        content.setFont(PDType1Font.HELVETICA, 12);
+        content.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 12);
         float colWidth = width / 3;
 
         // Contenido de las celdas
