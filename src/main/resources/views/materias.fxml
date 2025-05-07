@@ -26,19 +26,19 @@
             <VBox fx:id="menuItems" spacing="10" styleClass="menu-items">
                 <Button text="Materias" styleClass="menu-button" onAction="#handleMaterias">
                     <graphic>
-                        <FontIcon iconLiteral="fas-book" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="fas--alt" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
 
                 <Button text="Estudiantes" styleClass="menu-button" onAction="#handleEstudiantes">
                     <graphic>
-                        <FontIcon iconLiteral="fas-users" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="fas-users-alt" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
 
                 <Button text="Notas" styleClass="menu-button" onAction="#handleNotas">
                     <graphic>
-                        <FontIcon iconLiteral="fas-edit" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="fas-edit-alt" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
 
@@ -58,7 +58,7 @@
                 <Label text="Materias" styleClass="title-label"/>
                 <Button text="Agregar Materia" styleClass="add-button" onAction="#handleAgregarMateria">
                     <graphic>
-                        <FontIcon iconLiteral="fas-plus-circle" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="fas-plus--alt" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
             </HBox>

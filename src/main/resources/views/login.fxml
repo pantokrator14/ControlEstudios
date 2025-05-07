@@ -24,13 +24,13 @@
         <VBox alignment="CENTER" spacing="25" styleClass="form-container">
             <!-- Campo de usuario -->
             <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
-                <FontIcon iconLiteral="fas-user" iconSize="24" styleClass="icon"/>
+                <FontIcon iconLiteral="fas-user-alt" iconSize="24" styleClass="icon"/>
                 <TextField fx:id="usernameField" promptText="Usuario"/>
             </HBox>
 
             <!-- Campo de contraseña -->
             <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
-                <FontIcon iconLiteral="fas-lock" iconSize="24" styleClass="icon"/>
+                <FontIcon iconLiteral="fas-lock-alt" iconSize="24" styleClass="icon"/>
                 <PasswordField fx:id="passwordField" promptText="Contraseña"/>
             </HBox>
 
