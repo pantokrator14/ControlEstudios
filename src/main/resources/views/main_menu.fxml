@@ -20,25 +20,25 @@
             <VBox fx:id="menuItems" spacing="10" styleClass="menu-items">
                 <Button text="Materias" styleClass="menu-button" onAction="#handleMaterias">
                     <graphic>
-                        <FontIcon iconLiteral="fas--alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-book" iconSize="20"/>
                     </graphic>
                 </Button>
 
                 <Button text="Estudiantes" styleClass="menu-button" onAction="#handleEstudiantes">
                     <graphic>
-                        <FontIcon iconLiteral="fas-users-alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-account" iconSize="20"/>
                     </graphic>
                 </Button>
 
                 <Button text="Notas" styleClass="menu-button" onAction="#handleNotas">
                     <graphic>
-                        <FontIcon iconLiteral="fas-edit-alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-pencil" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
 
                 <Button text="Salir" styleClass="menu-button" onAction="#handleSalir">
                     <graphic>
-                        <FontIcon iconLiteral="fas-sign-out-alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-exit-to-app" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
             </VBox>

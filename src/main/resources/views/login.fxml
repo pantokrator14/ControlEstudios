@@ -24,20 +24,20 @@
         <VBox alignment="CENTER" spacing="25" styleClass="form-container">
             <!-- Campo de usuario -->
             <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
-                <FontIcon iconLiteral="fas-user-alt" iconSize="24" styleClass="icon"/>
+                <FontIcon iconLiteral="mdi-account" iconSize="24" styleClass="icon"/>
                 <TextField fx:id="usernameField" promptText="Usuario"/>
             </HBox>
 
             <!-- Campo de contraseña -->
             <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
-                <FontIcon iconLiteral="fas-lock-alt" iconSize="24" styleClass="icon"/>
+                <FontIcon iconLiteral="mdi-lock" iconSize="24" styleClass="icon"/>
                 <PasswordField fx:id="passwordField" promptText="Contraseña"/>
             </HBox>
 
             <!-- Botón Ingresar -->
             <Button text=" Ingresar" styleClass="login-button" onAction="#handleLogin">
                 <graphic>
-                    <FontIcon iconLiteral="fas-sign-in-alt" iconSize="18" styleClass="icon"/>
+                    <FontIcon iconLiteral="mdi-login" iconSize="18" styleClass="icon"/>
                 </graphic>
             </Button>
         </VBox>

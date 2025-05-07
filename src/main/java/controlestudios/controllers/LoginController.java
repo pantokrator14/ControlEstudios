@@ -8,20 +8,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginController {
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = Logger.getLogger(LoginController.class.getName()); // Logger nativo
 
+    // Componentes de UI (sin cambios)
     @FXML private ToggleButton themeToggle;
     @FXML private StackPane rootPane;
-
-
-    /*Login */
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
 
@@ -32,13 +31,17 @@ public class LoginController {
 
         if (username.isEmpty() || password.isEmpty()) {
             mostrarError("Campos vacíos", "Usuario y contraseña son obligatorios.");
+            logger.warning("Intento de login con campos vacíos"); // Nivel WARNING
             return;
         }
 
-        if (username.equals("admin") && password.equals("admin")) {
+        if ("admin".equals(username) && "admin".equals(password)) {
+            logger.info("Login exitoso para usuario: " + username); // Nivel INFO
             cargarMenuPrincipal();
         } else {
-            mostrarError("Credenciales incorrectas", "Usuario o contraseña inválidos.");
+            String mensajeError = "Credenciales inválidas para usuario: " + username;
+            logger.log(Level.SEVERE, mensajeError); // Nivel SEVERE
+            mostrarError("Credenciales incorrectas", mensajeError);
         }
     }
 
@@ -47,13 +50,15 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_menu.fxml"));
             Parent root = loader.load();
 
-            // Obtener la ventana actual y reutilizarla
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setMaximized(true); // Mantener maximizada
+            stage.setMaximized(true);
+
+            logger.fine("Menú principal cargado exitosamente"); // Nivel FINE
+
         } catch (Exception e) {
-            logger.error("Error al cargar el menú principal", e);
-            mostrarError("Error", "No se pudo cargar el menú principal.");
+            logger.log(Level.SEVERE, "Error crítico al cargar el menú principal", e); // Log detallado
+            mostrarError("Error fatal", "No se pudo inicializar la interfaz principal");
         }
     }
 

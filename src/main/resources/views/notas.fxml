@@ -24,25 +24,25 @@
             <VBox fx:id="menuItems" spacing="10" styleClass="menu-items">
                 <Button text="Materias" styleClass="menu-button" onAction="#handleMaterias">
                     <graphic>
-                        <FontIcon iconLiteral="fas--alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-book" iconSize="20"/>
                     </graphic>
                 </Button>
 
                 <Button text="Estudiantes" styleClass="menu-button" onAction="#handleEstudiantes">
                     <graphic>
-                        <FontIcon iconLiteral="fas-users-alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-account" iconSize="20"/>
                     </graphic>
                 </Button>
 
                 <Button text="Notas" styleClass="menu-button" onAction="#handleNotas">
                     <graphic>
-                        <FontIcon iconLiteral="fas-edit-alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-pencil" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
 
                 <Button text="Salir" styleClass="menu-button" onAction="#handleSalir">
                     <graphic>
-                        <FontIcon iconLiteral="fas-sign-out-alt" iconSize="18" styleClass="icon"/>
+                        <FontIcon iconLiteral="mdi-exit-to-app" iconSize="18" styleClass="icon"/>
                     </graphic>
                 </Button>
             </VBox>
@@ -58,7 +58,7 @@
                     <TextField fx:id="txtCedulaBusqueda" promptText="Cédula" styleClass="input-field"/>
                     <Button text="Buscar" styleClass="search-button" onAction="#handleBuscarEstudiante">
                         <graphic>
-                            <FontIcon iconLiteral="fas-search-alt" iconSize="16" styleClass="icon"/>
+                            <FontIcon iconLiteral="mdi-magnify" iconSize="16" styleClass="icon"/>
                         </graphic>
                     </Button>
                 </HBox>
@@ -68,12 +68,12 @@
                 <HBox alignment="CENTER" spacing="20" styleClass="header-container">
                     <Button text="Registrar Nota" styleClass="add-button" onAction="#handleRegistrarNota">
                         <graphic>
-                            <FontIcon iconLiteral="fas-plus-circle" iconSize="18" styleClass="icon"/>
+                            <FontIcon iconLiteral="mdi-plus" iconSize="18" styleClass="icon"/>
                         </graphic>
                     </Button>
                     <Button text="Descargar Boletín" styleClass="download-button" onAction="#handleDescargarBoleta">
                         <graphic>
-                            <FontIcon iconLiteral="fas-download-alt" iconSize="18" styleClass="icon"/>
+                            <FontIcon iconLiteral="mdi-download" iconSize="18" styleClass="icon"/>
                         </graphic>
                     </Button>
                 </HBox>
@@ -90,6 +90,9 @@
                             <cellValueFactory><PropertyValueFactory property="valor"/></cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="120">
+                            <cellFactory>
+
+                            </cellFactory>
                         </TableColumn>
                     </columns>
                 </TableView>

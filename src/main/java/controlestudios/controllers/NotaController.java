@@ -134,13 +134,13 @@ public class NotaController {
 
             {
                 // Ícono Editar
-                FontIcon iconoEditar = new FontIcon("fas-pencil-alt");
+                FontIcon iconoEditar = new FontIcon("mdi-pencil");
                 iconoEditar.setIconSize(16);
                 btnEditar.setGraphic(iconoEditar);
                 btnEditar.getStyleClass().addAll("action-button", "edit-button");
 
                 // Ícono Eliminar
-                FontIcon iconoEliminar = new FontIcon("fas-trash-alt");
+                FontIcon iconoEliminar = new FontIcon("mdi-delete");
                 iconoEliminar.setIconSize(16);
                 btnEliminar.setGraphic(iconoEliminar);
                 btnEliminar.getStyleClass().addAll("action-button", "delete-button");
