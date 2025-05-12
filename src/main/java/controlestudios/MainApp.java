@@ -6,9 +6,11 @@ import javafx.scene.control.Alert;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -19,6 +21,14 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         try {
             DatabaseInitializer.initialize();
+
+            InputStream iconStream = getClass().getResourceAsStream("/images/logo.png");
+            if (iconStream != null) {
+                Image icon = new Image(iconStream);
+                primaryStage.getIcons().add(icon);
+            } else {
+                LOG.warning("No se encontró el ícono en /images/logo.png");
+            }
 
             Parent root = loadFXML("/views/login.fxml");
             primaryStage.setScene(new Scene(root, 800, 600));

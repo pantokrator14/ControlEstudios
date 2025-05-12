@@ -78,7 +78,8 @@
                         </TableColumn>
                     </columns>
                 </TableView>
-                <Label text="No hay materias registradas" styleClass="empty-message"/>
+                <Label text="No hay materias registradas aún" styleClass="empty-message"
+                       visible="${controller.tablaVacia}"/>
             </StackPane>
         </VBox>
     </center>

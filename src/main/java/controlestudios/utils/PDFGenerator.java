@@ -15,108 +15,101 @@ import java.util.List;
 public class PDFGenerator {
 
     public static void generarBoletaNotas(Estudiante estudiante, List<Nota> notas, String rutaLogo) {
-        String dest = "boleta_" + estudiante.getCedula() + ".pdf";
+        String dest = SystemPaths.getDesktopPath() + "\\Boletin_" + estudiante.getCedula() + ".pdf";
 
         try (PDDocument doc = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             doc.addPage(page);
 
-            PDPageContentStream content = new PDPageContentStream(doc, page);
+            try (PDPageContentStream content = new PDPageContentStream(doc, page)) {
 
-            // --- Agregar logo ---
-            PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, doc);
-            float logoWidth = 100;
-            float logoHeight = (logoWidth * logo.getHeight()) / logo.getWidth();
-            content.drawImage(logo, 50, 750 - logoHeight, logoWidth, logoHeight);
+                // --- Encabezado institucional ---
+                content.setFont(PDType1Font.HELVETICA_BOLD, 10);
+                content.beginText();
+                content.newLineAtOffset(50, 750);
+                content.showText("REPÚBLICA BOLIVARIANA DE VENEZUELA");
+                content.newLineAtOffset(0, -15);
+                content.showText("MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN");
+                content.newLineAtOffset(0, -15);
+                content.showText("UNIDAD EDUCATIVA NACIONAL CÉSAR AUGUSTO AGREDA");
+                content.endText();
 
-            // --- Título del plantel ---
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA_BOLD, 16);
-            content.newLineAtOffset(50, 720);
-            content.showText("COLEGIO NACIONAL CÉSAR AUGUSTO ÁGREDA");
-            content.endText();
+                // --- Logo (si es necesario) ---
+                PDImageXObject logo = PDImageXObject.createFromFile(rutaLogo, doc);
+                content.drawImage(logo, 400, 700, 100, 100); // Ajusta coordenadas según el modelo
 
-            // --- Datos del estudiante ---
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA, 12);
-            content.newLineAtOffset(50, 680);
-            content.showText("Nombre: " + estudiante.getNombreCompleto());
-            content.newLineAtOffset(0, -20);
-            content.showText("Cédula: " + estudiante.getCedula());
-            content.newLineAtOffset(0, -20);
-            content.showText("Sección: " + estudiante.getSeccion());
-            content.endText();
+                // --- Título del boletín ---
+                content.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                content.beginText();
+                content.newLineAtOffset(220, 650); // Centrado aproximado
+                content.showText("BOLETÍN DE CALIFICACIONES");
+                content.endText();
 
-            // --- Tabla de notas ---
-            float margin = 50;
-            float yPosition = 600;
-            float rowHeight = 20;
-            float tableWidth = page.getMediaBox().getWidth() - 2 * margin;
+                // --- Datos del estudiante ---
+                content.setFont(PDType1Font.HELVETICA, 12);
+                content.beginText();
+                content.newLineAtOffset(50, 600);
+                content.showText("Nombre: " + estudiante.getNombreCompleto());
+                content.newLineAtOffset(0, -25);
+                content.showText("Cédula: " + estudiante.getCedula());
+                content.newLineAtOffset(0, -25);
+                content.showText("Sección: " + estudiante.getSeccion());
+                content.endText();
 
-            // Encabezados de la tabla
-            drawTableHeader(content, margin, yPosition, tableWidth, rowHeight);
-            yPosition -= rowHeight;
+                // --- Tabla de materias ---
+                float marginX = 50;
+                float yPosition = 500;
+                float rowHeight = 20;
 
-            // Filas de notas
-            double sumaTotal = 0;
-            for (Nota nota : notas) {
-                drawTableRow(content, margin, yPosition, tableWidth, rowHeight, nota);
-                yPosition -= rowHeight;
-                sumaTotal += nota.getValor();
+                // Encabezados de la tabla
+                content.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                content.beginText();
+                content.newLineAtOffset(marginX, yPosition);
+                content.showText("MATERIA");
+                content.newLineAtOffset(350, 0); // Ajuste para columna "PROMEDIO"
+                content.showText("PROMEDIO MATERIA");
+                content.endText();
+
+                // Línea divisoria debajo del encabezado
+                content.moveTo(marginX, yPosition - 5);
+                content.lineTo(marginX + 400, yPosition - 5);
+                content.stroke();
+
+                // Filas de notas
+                content.setFont(PDType1Font.HELVETICA, 12);
+                yPosition -= 30; // Espacio después del encabezado
+                for (Nota nota : notas) {
+                    content.beginText();
+                    content.newLineAtOffset(marginX, yPosition);
+                    content.showText(nota.getNombreMateria());
+                    content.newLineAtOffset(350, 0);
+                    content.showText(String.valueOf(nota.getValor()));
+                    content.endText();
+                    yPosition -= rowHeight;
+                }
+
+                // --- Promedio general ---
+                double promedio = notas.stream().mapToDouble(Nota::getValor).average().orElse(0);
+                content.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                content.beginText();
+                content.newLineAtOffset(marginX, yPosition - 30);
+                content.showText("Promedio General: " + String.format("%.2f", promedio));
+                content.endText();
+
+                // --- Firma del director ---
+                content.setFont(PDType1Font.HELVETICA_OBLIQUE, 12);
+                content.beginText();
+                content.newLineAtOffset(400, 100); // Alineado a la derecha
+                content.showText("Lcdo. Gustavo Curiel");
+                content.newLineAtOffset(0, -20);
+                content.showText("Director del Plantel");
+                content.endText();
+
             }
 
-            // --- Promedio general ---
-            content.beginText();
-            content.setFont(PDType1Font.HELVETICA_BOLD, 12);
-            content.newLineAtOffset(margin, yPosition - 30);
-            content.showText("Promedio General: " + String.format("%.2f", sumaTotal / notas.size()));
-            content.endText();
-
-            content.close();
             doc.save(dest);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void drawTableHeader(PDPageContentStream content, float x, float y, float width, float height) throws IOException {
-        content.setFont(PDType1Font.HELVETICA, 12);
-        content.setLineWidth(1f);
-
-        String[] headers = {"Materia", "Nota", "Promedio"};
-        float colWidth = width / headers.length;
-
-        for (int i = 0; i < headers.length; i++) {
-            content.beginText();
-            content.newLineAtOffset(x + (i * colWidth) + 5, y - 15);
-            content.showText(headers[i]);
-            content.endText();
-        }
-
-        content.moveTo(x, y);
-        content.lineTo(x + width, y);
-        content.stroke();
-    }
-
-    private static void drawTableRow(PDPageContentStream content, float x, float y, float width, float height, Nota nota) throws IOException {
-        content.setFont(PDType1Font.HELVETICA, 12);
-        float colWidth = width / 3;
-
-        String[] rowData = {
-                nota.getNombreMateria(),
-                String.valueOf(nota.getValor()),
-                "N/A"
-        };
-
-        for (int i = 0; i < rowData.length; i++) {
-            content.beginText();
-            content.newLineAtOffset(x + (i * colWidth) + 5, y - 15);
-            content.showText(rowData[i]);
-            content.endText();
-        }
-
-        content.moveTo(x, y - height);
-        content.lineTo(x + width, y - height);
-        content.stroke();
     }
 }

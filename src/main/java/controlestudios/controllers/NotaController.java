@@ -1,8 +1,11 @@
 package controlestudios.controllers;
 
+import controlestudios.utils.PDFConstanciaGenerator;
 import controlestudios.utils.PDFGenerator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -108,17 +112,24 @@ public class NotaController {
     @FXML private TableColumn<Nota, Double> colNota;
     @FXML private TableColumn<Nota, Void> colAcciones;
 
+
     //============= INITIALIZATION =============
     @FXML
     public void initialize() {
         configurarVinculaciones();
         configurarColumnas();
         configurarAccionesTabla();
+
+
     }
 
     private void configurarVinculaciones() {
         pantallaBusqueda.visibleProperty().bind(modoBusqueda);
         pantallaNotas.visibleProperty().bind(modoBusqueda.not());
+
+        // Opcional: Gestionar espacio ocupado
+        pantallaBusqueda.managedProperty().bind(modoBusqueda);
+        pantallaNotas.managedProperty().bind(modoBusqueda.not());
     }
 
     private void configurarColumnas() {
@@ -217,8 +228,22 @@ public class NotaController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Boleta generada");
         alert.setHeaderText("Descarga exitosa");
-        alert.setContentText("El PDF se guardó en: " + System.getProperty("user.dir"));
+        alert.setContentText("El PDF se guardó en el escritorio.");
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleGenerarConstancia() {
+        if (estudianteActual != null) {
+            PDFConstanciaGenerator.generarConstancia(estudianteActual, "/images/logo.png");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Constancia generada");
+            alert.setHeaderText("Descarga exitosa");
+            alert.setContentText("El PDF se guardó en el escritorio.");
+            alert.showAndWait();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Seleccione un estudiante primero").show();
+        }
     }
 
     //============= DATABASE OPERATIONS =============
@@ -318,6 +343,7 @@ public class NotaController {
     public boolean isTablaVacia() {
         return tablaVacia.get();
     }
+
 
 
 }
