@@ -1,0 +1,42 @@
+/* ========== ESTILOS GLOBALES ========== */
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-primary-color: #6200EE;
+    -fx-secondary-color: #3700B3;
+}
+
+/* ========== ÍCONOS ========== */
+.ikonli-font-icon {
+    -fx-icon-color: #666;
+    -fx-icon-size: 1.2em;
+}
+
+.button:hover .ikonli-font-icon {
+    -fx-icon-color: #333 !important;
+}
+
+/* ========== COMPONENTES COMUNES ========== */
+.action-button {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+}
+
+.input-field {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 8;
+    -fx-padding: 12px;
+}
+
+/* ========== COLORES ESPECÍFICOS ========== */
+.edit-icon .ikonli-font-icon {
+    -fx-icon-color: #FFC107; /* Amarillo */
+}
+
+.delete-icon .ikonli-font-icon {
+    -fx-icon-color: #F44336; /* Rojo */
+}
+
+.primary-icon .ikonli-font-icon {
+    -fx-icon-color: -fx-primary-color;
+}

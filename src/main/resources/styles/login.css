@@ -1,0 +1,55 @@
+/* Estilos base */
+.root {
+    -fx-font-family: 'Segoe UI';
+}
+
+/* Contenedor principal del login */
+.login-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-padding: 40 60 40 60;
+    -fx-max-width: 400;
+    -fx-max-height: 500; /* Ajusta según necesidad */
+    -fx-spacing: 30;
+    -fx-alignment: center; /* Centrado vertical y horizontal */
+}
+
+/* Contenedor del formulario */
+.form-container {
+    -fx-alignment: center;
+    -fx-pref-width: 300;
+    -fx-spacing: 25;
+}
+
+/* Campos de entrada */
+.input-field {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-pref-width: 300;
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: #666;
+    -fx-pref-width: 250;
+}
+
+/* Botón de login */
+.login-button {
+    -fx-background-color: #FFA500;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-pref-width: 300;
+    -fx-padding: 12;
+    -fx-font-weight: bold;
+}
+
+.login-button:hover {
+    -fx-background-color: #FF8C00;
+}
+
+.login-button .icon {
+    -fx-fill: white;
+}

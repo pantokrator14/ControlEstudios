@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controlestudios.controllers.LoginController"
+           stylesheets="@../styles/login.css">
+
+    <!-- Fondo con gradiente -->
+    <Pane style="-fx-background-color: linear-gradient(to bottom right, #FFA500, #FFD700);"/>
+
+    <!-- Contenedor principal centrado -->
+    <VBox alignment="CENTER" spacing="30" styleClass="login-container">
+        <!-- Logo -->
+        <ImageView fitWidth="300" fitHeight="300">
+            <Image url="@../images/logo.png"/>
+        </ImageView>
+
+        <!-- Campos del formulario -->
+        <VBox alignment="CENTER" spacing="25" styleClass="form-container">
+            <!-- Campo de usuario -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
+                <FontIcon iconLiteral="mdi-account" iconSize="24" styleClass="icon"/>
+                <TextField fx:id="usernameField" promptText="Usuario"/>
+            </HBox>
+
+            <!-- Campo de contraseña -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="input-field">
+                <FontIcon iconLiteral="mdi-lock" iconSize="24" styleClass="icon"/>
+                <PasswordField fx:id="passwordField" promptText="Contraseña"/>
+            </HBox>
+
+            <!-- Botón Ingresar -->
+            <Button text=" Ingresar" styleClass="login-button" onAction="#handleLogin">
+                <graphic>
+                    <FontIcon iconLiteral="mdi-login" iconSize="18" styleClass="icon"/>
+                </graphic>
+            </Button>
+        </VBox>
+
+    </VBox>
+</StackPane>

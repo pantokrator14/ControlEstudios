@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controlestudios.controllers.MainMenuController"
+            stylesheets="@../styles/main_menu.css">
+
+    <left>
+        <VBox fx:id="sidebar" styleClass="sidebar" spacing="20" prefWidth="200">
+            <HBox alignment="CENTER" styleClass="sidebar-header" spacing="10" prefHeight="100">
+                <ImageView fitWidth="200" fitHeight="200" fx:id="logoImage">
+                    <Image url="@../images/logo.png"/>
+                </ImageView>
+            </HBox>
+
+            <VBox fx:id="menuItems" spacing="10" styleClass="menu-items">
+                <Button text="Materias" styleClass="menu-button" onAction="#handleMaterias">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-book" iconSize="20"/>
+                    </graphic>
+                </Button>
+
+                <Button text="Estudiantes" styleClass="menu-button" onAction="#handleEstudiantes">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-account" iconSize="20"/>
+                    </graphic>
+                </Button>
+
+                <Button text="Notas" styleClass="menu-button" onAction="#handleNotas">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-pencil" iconSize="18" styleClass="icon"/>
+                    </graphic>
+                </Button>
+
+                <Button text="Salir" styleClass="menu-button" onAction="#handleSalir">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-exit-to-app" iconSize="18" styleClass="icon"/>
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane>
+            <Label text="¡Bienvenido!" styleClass="welcome-message"/>
+        </StackPane>
+    </center>
+</BorderPane>

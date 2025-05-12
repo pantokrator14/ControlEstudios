@@ -1,0 +1,44 @@
+.label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.text-field, .text-area {
+    -fx-font-size: 14px;
+    -fx-pref-width: 300px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #ddd;
+}
+
+.text-area {
+    -fx-pref-height: 100px;
+}
+
+/* Botones */
+.save-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 8 15;
+}
+
+.cancel-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-padding: 8 15;
+}
+
+.save-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #d32f2f;
+}
+
+/* Mensajes de error */
+.error-label {
+    -fx-text-fill: #d32f2f;
+    -fx-font-size: 12px;
+}

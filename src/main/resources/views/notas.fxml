@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controlestudios.controllers.NotaController"
+            stylesheets="@../styles/materias.css">
+
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" styleClass="sidebar" spacing="20" prefWidth="200">
+            <HBox alignment="CENTER" styleClass="sidebar-header" spacing="10" prefHeight="100">
+                <ImageView fitWidth="200" fitHeight="200" fx:id="logoImage">
+                    <Image url="@../images/logo.png"/>
+                </ImageView>
+            </HBox>
+
+            <VBox fx:id="menuItems" spacing="10" styleClass="menu-items">
+                <Button text="Materias" styleClass="menu-button" onAction="#handleMaterias">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-book" iconSize="20"/>
+                    </graphic>
+                </Button>
+
+                <Button text="Estudiantes" styleClass="menu-button" onAction="#handleEstudiantes">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-account" iconSize="20"/>
+                    </graphic>
+                </Button>
+
+                <Button text="Notas" styleClass="menu-button" onAction="#handleNotas">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-pencil" iconSize="18" styleClass="icon"/>
+                    </graphic>
+                </Button>
+
+                <Button text="Salir" styleClass="menu-button" onAction="#handleSalir">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-exit-to-app" iconSize="18" styleClass="icon"/>
+                    </graphic>
+                </Button>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Contenido principal dinámico -->
+    <center>
+        <StackPane fx:id="contenidoDinamico">
+            <!-- Pantalla de búsqueda (visible por defecto) -->
+            <VBox fx:id="pantallaBusqueda" alignment="CENTER" spacing="20" styleClass="content-container">
+                <HBox alignment="CENTER" spacing="10">
+                    <TextField fx:id="txtCedulaBusqueda" promptText="Cédula" styleClass="input-field"/>
+                    <Button text="Buscar" styleClass="search-button" onAction="#handleBuscarEstudiante">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi-magnify" iconSize="16"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+
+            <!-- Pantalla de notas (visible solo tras encontrar estudiante) -->
+            <VBox fx:id="pantallaNotas" spacing="20" styleClass="content-container">
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-container">
+                    <Label text="Notas" styleClass="title-label"/>
+                    <Button text="Registrar Nota" styleClass="add-button" onAction="#handleRegistrarNota">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi-plus" iconSize="18"/>
+                        </graphic>
+                    </Button>
+                    <Button text="Descargar Boletín" styleClass="download-button" onAction="#handleDescargarBoleta">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi-download" iconSize="18"/>
+                        </graphic>
+                    </Button>
+                    <Button text="Generar Constancia" styleClass="constancia-button" onAction="#handleGenerarConstancia">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi-certificate" iconSize="18"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <Line endX="1000" stroke="#e0e0e0"/>
+
+                <!-- Tabla de notas -->
+                <TableView fx:id="tablaNotas" styleClass="materias-table">
+                    <columns>
+                        <TableColumn fx:id="colMateria" text="Materia" prefWidth="300">
+                            <cellValueFactory><PropertyValueFactory property="nombreMateria"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colNota" text="Nota" prefWidth="150">
+                            <cellValueFactory><PropertyValueFactory property="valor"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                <Label text="No hay notas registradas" styleClass="empty-message"
+                       visible="${controller.tablaVacia}"/>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
