@@ -142,21 +142,28 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jpackage-plugin</artifactId>
-                <version>1.0.0</version>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.5.1</version>
                 <configuration>
                     <name>ControlEstudios</name>
+                    <appVersion>1.0</appVersion>
                     <vendor>UEN César Augusto Agreda</vendor>
                     <mainClass>controlestudios.MainApp</mainClass>
-                    <icon>src/main/resources/images/logo.ico</icon> <!-- Requiere un .ico -->
-                    <appVersion>1.0</appVersion>
+                    <icon>src/main/resources/images/logo.ico</icon>
                     <destination>target/dist</destination>
-                    <runtimeImage>${env.JAVA_HOME}</runtimeImage> <!-- Usa Azul Zulu FX -->
-                    <jpackageArgs>
-                        <jpackageArg>--type</jpackageArg>
-                        <jpackageArg>app-image</jpackageArg>
-                    </jpackageArgs>
+                    <input>${project.build.directory}</input>
+                    <mainJar>ControlEstudios-1.0-SNAPSHOT.jar</mainJar>
+                    <arguments>
+                        <argument>--win-shortcut</argument>
+                        <argument>--win-menu</argument>
+                        <argument>--type</argument>
+                        <argument>msi</argument> <!-- Genera un instalador .msi -->
+                        <argument>--resource-dir</argument>
+                        <argument>src/main/resources</argument>
+                        <argument>--runtime-image</argument>
+                        <argument>${java.home}</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>
@@ -170,6 +177,7 @@
                     <include>**/*.png</include>
                     <include>**/*.sql</include>
                     <include>**/*.css</include>
+                    <include>**/*.db</include>
                 </includes>
             </resource>
         </resources>
