@@ -49,6 +49,10 @@ public class PDFConstanciaGenerator {
                 content.showText("MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN");
                 content.newLineAtOffset(0, -15);
                 content.showText("UNIDAD EDUCATIVA NACIONAL CÉSAR AUGUSTO AGREDA");
+                content.newLineAtOffset(0, -15);
+                content.showText("CÓDIGO DEL PLANTEL: S1512D1114");
+                content.newLineAtOffset(0, -15);
+                content.showText("RIF J-40963802");
                 content.endText();
 
                 // ========== TÍTULO CENTRADO ==========
@@ -90,6 +94,8 @@ public class PDFConstanciaGenerator {
                 content.showText("_________________________");
                 content.newLineAtOffset(40, -30); // Ajuste para centrar texto bajo línea
                 content.showText("Lcdo. Gustavo Curiel");
+                content.newLineAtOffset(0, -20);
+                content.showText("C.I.: V.-9.506.178");
                 content.newLineAtOffset(0, -20);
                 content.showText("Director del Plantel");
                 content.endText();

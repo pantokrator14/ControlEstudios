@@ -220,9 +220,9 @@ public class NotaController {
         if (estudianteActual == null) return;
 
         ObservableList<Nota> notas = notaDAO.obtenerNotasPorEstudiante(estudianteActual.getId());
-        String rutaLogo = "src/main/resources/images/logo.png"; // Ajusta según tu estructura
+         // Ajusta según tu estructura
 
-        PDFGenerator.generarBoletaNotas(estudianteActual, notas, rutaLogo);
+        PDFGenerator.generarBoletaNotas(estudianteActual, notas, "/images/logo.png");
 
         // Mostrar mensaje de éxito
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
