@@ -80,4 +80,4 @@ Actualmente solo soporta el usuario admin (próxima versión incluirá gestión 
 
 📬 Contacto
 📧 julioblogs1998@gmail.com
-💼 linkedin.com/in/juliusjosepham
+💼 [LinkedIn](linkedin.com/in/juliusjosepham)
