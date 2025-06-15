@@ -20,6 +20,9 @@
     <Label text="Sección:" GridPane.rowIndex="3"/>
     <TextField fx:id="txtSeccion" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
+    <Label text="Grado:"/>
+    <ComboBox fx:id="cmbGrado" prefWidth="100"/>
+
     <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
         <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar"/>
         <Button fx:id="btnGuardar" text="Guardar" styleClass="save-button" onAction="#handleGuardar"/>

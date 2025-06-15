@@ -2,6 +2,7 @@ package controlestudios.controllers;
 
 import controlestudios.utils.PDFConstanciaGenerator;
 import controlestudios.utils.PDFGenerator;
+import controlestudios.utils.PeriodoUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,9 +30,11 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 public class NotaController {
 
     //Sidebar
@@ -96,13 +99,6 @@ public class NotaController {
     //Contenido
 
     //============= PROPERTIES =============
-    private final BooleanProperty modoBusqueda = new SimpleBooleanProperty(true);
-    private Estudiante estudianteActual;
-    private final NotaDAO notaDAO = new NotaDAO();
-    private final EstudianteDAO estudianteDAO = new EstudianteDAO();
-    private final MateriaDAO materiaDAO = new MateriaDAO();
-
-    //============= FXML COMPONENTS =============
     @FXML private StackPane contenidoDinamico;
     @FXML private TextField txtCedulaBusqueda;
     @FXML private VBox pantallaBusqueda;
@@ -111,16 +107,38 @@ public class NotaController {
     @FXML private TableColumn<Nota, String> colMateria;
     @FXML private TableColumn<Nota, Double> colNota;
     @FXML private TableColumn<Nota, Void> colAcciones;
+    @FXML private ComboBox<Integer> cmbMomento;
+    @FXML private ComboBox<Integer> cmbAnioEscolar;
 
+    private final BooleanProperty modoBusqueda = new SimpleBooleanProperty(true);
+    private Estudiante estudianteActual;
+    private final NotaDAO notaDAO = new NotaDAO();
+    private final EstudianteDAO estudianteDAO = new EstudianteDAO();
+    private final MateriaDAO materiaDAO = new MateriaDAO();
 
-    //============= INITIALIZATION =============
     @FXML
     public void initialize() {
         configurarVinculaciones();
         configurarColumnas();
         configurarAccionesTabla();
 
+        // Configurar ComboBox de momentos
+        cmbMomento.getItems().addAll(1, 2, 3);
+        cmbMomento.getSelectionModel().selectFirst();
+        cargarAniosEscolares();
+        cmbMomento.getSelectionModel().selectFirst();
+    }
 
+    private void cargarAniosEscolares() {
+        List<Integer> anios = notaDAO.obtenerAniosEscolares();
+
+        // Formatear años para mostrar: 2023 → "2023/2024"
+        Map<Integer, String> aniosFormateados = new LinkedHashMap<>();
+        for (Integer anio : anios) {
+            aniosFormateados.put(anio, anio + "/" + (anio + 1));
+        }
+
+        cmbAnioEscolar.getItems().setAll(aniosFormateados.values());
     }
 
     private void configurarVinculaciones() {
@@ -199,7 +217,10 @@ public class NotaController {
 
             NotaFormController controller = loader.getController();
             controller.setEstudiante(estudianteActual);
-            controller.setMaterias(materiaDAO.obtenerTodasMaterias());
+
+            // Filtrar materias por grado del estudiante
+            List<Materia> materias = materiaDAO.obtenerPorGrado(estudianteActual.getGrado());
+            controller.setMaterias(materias);
 
             Stage stage = new Stage();
             controller.setDialogStage(stage);
@@ -208,27 +229,95 @@ public class NotaController {
             stage.showAndWait();
 
             if (controller.isGuardado()) {
-                notaDAO.guardarNota(controller.getNota());
+                Nota nota = controller.getNota();
+                nota.setFechaRegistro(LocalDate.now()); // Registrar fecha actual
+                nota.setAnioEscolar(PeriodoUtil.obtenerAnioEscolar()); // Registrar año escolar
+                notaDAO.guardarNota(nota);
                 cargarNotasEstudiante();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void handleDescargarBoleta() {
         if (estudianteActual == null) return;
 
-        ObservableList<Nota> notas = notaDAO.obtenerNotasPorEstudiante(estudianteActual.getId());
-         // Ajusta según tu estructura
+        Integer momento = cmbMomento.getValue();
+        Integer anioEscolar = cmbAnioEscolar.getValue();
+        Integer anioActual = PeriodoUtil.obtenerAnioEscolarActual();
 
-        PDFGenerator.generarBoletaNotas(estudianteActual, notas, "/images/logo.png");
+        if (momento == null || anioEscolar == null) {
+            mostrarAlerta("Por favor seleccione momento y año");
+            return;
+        }
 
-        // Mostrar mensaje de éxito
+        // Validar si el momento existe en ese año
+        if (!PeriodoUtil.momentoExisteEnAnio(momento, anioEscolar)) {
+            mostrarAlerta("Este período no existe en el año seleccionado");
+            return;
+        }
+
+        // Validar si es momento futuro
+        if (PeriodoUtil.esMomentoFuturo(momento, anioEscolar)) {
+            mostrarAlerta("Este período es futuro y aún no está disponible");
+            return;
+        }
+
+        ObservableList<Nota> notas = notaDAO.obtenerPorMomento(
+                estudianteActual.getId(),
+                momento,
+                anioEscolar
+        );
+
+        if (notas.isEmpty()) {
+            mostrarAlerta("No hay notas registradas para este momento/año");
+            return;
+        }
+
+        // Calcular promedio según contexto
+        double promedio;
+        if (PeriodoUtil.esAnioEscolarActual(anioEscolar)) {
+            // Promedio dinámico (puede cambiar)
+            promedio = new NotaDAO().getPromedioGeneral(
+                    estudianteActual.getId(),
+                    anioEscolar
+            );
+        } else {
+            // Promedio histórico (fijo)
+            ObservableList<Nota> notas = notaDAO.obtenerPorMomento(
+                    estudianteActual.getId(),
+                    momento,
+                    anioEscolar
+            );
+            promedio = notas.stream()
+                    .mapToDouble(Nota::getValor)
+                    .average()
+                    .orElse(0);
+        }
+
+        PDFGenerator.generarBoletaNotas(
+                estudianteActual,
+                notas,
+                "/images/logo.png",
+                momento,
+                anioEscolar,
+                promedio
+        );
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Boleta generada");
         alert.setHeaderText("Descarga exitosa");
         alert.setContentText("El PDF se guardó en el escritorio.");
+        alert.showAndWait();
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Advertencia");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
         alert.showAndWait();
     }
 

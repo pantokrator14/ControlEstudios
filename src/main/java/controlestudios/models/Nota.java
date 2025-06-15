@@ -24,4 +24,8 @@ public class Nota {
 
     public String getNombreMateria() { return nombreMateria.get(); }
     public void setNombreMateria(String value) { nombreMateria.set(value); }
-}
+    public LocalDate getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+
+    public int getAnioEscolar() { return anioEscolar; }
+    public void setAnioEscolar(int anioEscolar) { this.anioEscolar = anioEscolar; }}

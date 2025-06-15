@@ -17,10 +17,19 @@ import java.util.stream.Collectors;
 
 public class PDFGenerator {
 
-    public static void generarBoletaNotas(Estudiante estudiante, List<Nota> notas, String rutaLogo) {
+    public static void generarBoletaNotas(
+            Estudiante estudiante,
+            List<Nota> notas,
+            String rutaLogo,
+            int momento,
+            int anioEscolar,
+            double promedioGeneral
+    ) {
+        String periodo = PeriodoUtil.obtenerNombrePeriodo(momento, anioEscolar);
+        };
         String dest = SystemPaths.getDesktopPath() + "\\Boletin_" + estudiante.getCedula() + ".pdf";
 
-        try (PDDocument doc = new PDDocument()) {
+        try(PDDocument doc = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             doc.addPage(page);
 
@@ -60,7 +69,7 @@ public class PDFGenerator {
                 content.setFont(PDType1Font.HELVETICA_BOLD, 16);
                 content.beginText();
                 content.newLineAtOffset(220, 650); // Centrado aproximado
-                content.showText("BOLETÍN DE CALIFICACIONES");
+                content.showText("BOLETÍN DE CALIFICACIONES - " + periodo);
                 content.endText();
 
                 // --- Datos del estudiante ---
@@ -121,11 +130,10 @@ public class PDFGenerator {
                 }
 
                 // --- Promedio general ---
-                double promedio = notas.stream().mapToDouble(Nota::getValor).average().orElse(0);
                 content.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 content.beginText();
                 content.newLineAtOffset(marginX, yPosition - 30);
-                content.showText("Promedio General: " + String.format("%.2f", promedio));
+                content.showText("Promedio General: " + String.format("%.2f", promedioGeneral));
                 content.endText();
 
                 // --- Firma del director ---

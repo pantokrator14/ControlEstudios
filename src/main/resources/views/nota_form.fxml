@@ -14,6 +14,9 @@
     <Label text="Nota:" GridPane.rowIndex="1"/>
     <TextField fx:id="txtNota" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
+    <Label fx:id="lblFechaRegistro"/>
+    <DatePicker fx:id="dpFechaRegistro" promptText="Fecha de evaluación" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
     <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="1">
         <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar"/>
         <Button fx:id="btnGuardar" text="Guardar" styleClass="save-button" onAction="#handleGuardar"/>

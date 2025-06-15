@@ -25,15 +25,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EstudianteController {
-    private static final Logger LOG = Logger.getLogger(EstudianteController.class.getName()); // Logger nativo
+    private static final Logger LOG = Logger.getLogger(EstudianteController.class.getName());
 
-    // Sidebar y componentes FXML (sin cambios)
     @FXML private VBox sidebar;
     @FXML private TableView<Estudiante> tablaEstudiantes;
     @FXML private TableColumn<Estudiante, String> colNombre;
     @FXML private TableColumn<Estudiante, String> colCedula;
     @FXML private TableColumn<Estudiante, LocalDate> colFechaNacimiento;
     @FXML private TableColumn<Estudiante, String> colSeccion;
+    @FXML private TableColumn<Estudiante, Integer> colGrado; // Nueva columna
     @FXML private TableColumn<Estudiante, Void> colAcciones;
 
     private final EstudianteDAO estudianteDAO = new EstudianteDAO();
@@ -83,7 +83,7 @@ public class EstudianteController {
 
     // ==================== LÓGICA PRINCIPAL ====================
     @FXML
-    public void initialize() {
+    private void initialize() {
         configurarColumnas();
         cargarDatos();
         configurarAccionesTabla();
@@ -96,6 +96,7 @@ public class EstudianteController {
                 new SimpleObjectProperty<>(cellData.getValue().getFechaNacimiento())
         );
         colSeccion.setCellValueFactory(new PropertyValueFactory<>("seccion"));
+        colGrado.setCellValueFactory(new PropertyValueFactory<>("grado")); // Nueva columna
     }
 
     private void cargarDatos() {
@@ -166,7 +167,8 @@ public class EstudianteController {
             stage.showAndWait();
 
             if (controller.isGuardado()) {
-                estudianteDAO.guardarEstudiante(controller.getEstudiante());
+                Estudiante estudiante = controller.getEstudiante();
+                estudianteDAO.guardarEstudiante(estudiante);
                 cargarDatos();
             }
         } catch (IOException e) {

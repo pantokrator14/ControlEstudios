@@ -92,6 +92,7 @@ public class MateriaController {
     @FXML private TableColumn<Materia, String> colNombre;
     @FXML private TableColumn<Materia, String> colProfesor;
     @FXML private TableColumn<Materia, String> colDescripcion;
+    @FXML private TableColumn<Estudiante, Integer> colGrado;
     @FXML private TableColumn<Materia, Void> colAcciones;
 
 
@@ -106,6 +107,7 @@ public class MateriaController {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colProfesor.setCellValueFactory(new PropertyValueFactory<>("profesor"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        colGrado.setCellValueFactory(new PropertyValueFactory<>("grado"));
     }
 
     private void configurarAccionesTabla() {

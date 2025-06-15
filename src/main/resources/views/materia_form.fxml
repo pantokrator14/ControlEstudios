@@ -17,6 +17,9 @@
     <Label text="Profesor:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
     <TextField fx:id="txtProfesor" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
+    <Label text="Grado:"/>
+    <ComboBox fx:id="cmbGrado" prefWidth="100"/>
+
     <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
     <TextArea fx:id="txtDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 

@@ -14,13 +14,15 @@ public class EstudianteDAO {
 
     // Guardar un estudiante
     public void guardarEstudiante(Estudiante estudiante) {
-        String sql = "INSERT INTO estudiantes (nombre_completo, cedula, fecha_nacimiento, seccion) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO estudiantes (nombre, cedula, fecha_nacimiento, seccion, grado) " +
+                "VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, estudiante.getNombreCompleto());
             pstmt.setString(2, estudiante.getCedula());
             pstmt.setDate(3, Date.valueOf(estudiante.getFechaNacimiento())); // Conversión a java.sql.Date
             pstmt.setString(4, estudiante.getSeccion());
+            pstmt.setInt(5, estudiante.getGrado());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -29,7 +31,8 @@ public class EstudianteDAO {
 
     // Actualizar estudiante
     public void actualizarEstudiante(Estudiante estudiante) {
-        String sql = "UPDATE estudiantes SET nombre_completo = ?, fecha_nacimiento = ?, cedula = ?, seccion = ? WHERE id = ?";
+        String sql = "UPDATE estudiantes SET nombre = ?, cedula = ?, fecha_nacimiento = ?, " +
+                "seccion = ?, grado = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -38,7 +41,8 @@ public class EstudianteDAO {
             pstmt.setDate(2, Date.valueOf(estudiante.getFechaNacimiento())); // Corrección aquí
             pstmt.setString(3, estudiante.getCedula());
             pstmt.setString(4, estudiante.getSeccion());
-            pstmt.setInt(5, estudiante.getId());
+            pstmt.setInt(5, estudiante.getGrado());
+            pstmt.setInt(6, estudiante.getId());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
