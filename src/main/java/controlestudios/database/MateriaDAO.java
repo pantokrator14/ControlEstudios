@@ -75,7 +75,8 @@ public class MateriaDAO {
                 Materia materia = new Materia(
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
-                        rs.getString("profesor")
+                        rs.getString("profesor"),
+                        rs.getInt("grado")
                 );
                 materia.setId(rs.getInt("id"));
                 materias.add(materia);
@@ -83,6 +84,32 @@ public class MateriaDAO {
 
         } catch (SQLException e) {
             System.err.println("Error al obtener materias: " + e.getMessage());
+        }
+        return materias;
+    }
+
+    public ObservableList<Materia> obtenerPorGrado(int grado) {
+        String sql = "SELECT * FROM materias WHERE grado = ?";
+        ObservableList<Materia> materias = FXCollections.observableArrayList();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, grado);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Materia materia = new Materia(
+                        rs.getString("nombre"),
+                        rs.getString("profesor"),
+                        rs.getString("descripcion"),
+                        rs.getInt("grado")
+                );
+                materia.setId(rs.getInt("id"));
+                materias.add(materia);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener materias por grado: " + e.getMessage());
         }
         return materias;
     }

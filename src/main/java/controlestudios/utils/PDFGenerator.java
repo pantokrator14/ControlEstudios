@@ -26,7 +26,6 @@ public class PDFGenerator {
             double promedioGeneral
     ) {
         String periodo = PeriodoUtil.obtenerNombrePeriodo(momento, anioEscolar);
-        };
         String dest = SystemPaths.getDesktopPath() + "\\Boletin_" + estudiante.getCedula() + ".pdf";
 
         try(PDDocument doc = new PDDocument()) {
@@ -152,9 +151,11 @@ public class PDFGenerator {
                 content.showText("Director del Plantel");
                 content.endText();
 
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
 
-            doc.save(dest);
+        doc.save(dest);
         } catch (IOException e) {
             e.printStackTrace();
         }

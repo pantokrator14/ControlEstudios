@@ -10,7 +10,7 @@ public class Materia {
     // constructor vacío
     public Materia() {}
     // Constructor
-    public Materia(String nombre, String descripcion, String profesor) {
+    public Materia(String nombre, String descripcion, String profesor, int grado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.profesor = profesor;

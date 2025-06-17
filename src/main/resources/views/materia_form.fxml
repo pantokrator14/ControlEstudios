@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 
 <GridPane xmlns="http://javafx.com/javafx/17"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controlestudios.controllers.MateriaFormController"
           stylesheets="@../styles/materia_forms.css"
-          hgap="10" vgap="10"
-          alignment="CENTER">
+          hgap="15" vgap="15">
 
+    <!-- Fila 0: Nombre -->
     <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250"/>
 
+    <!-- Fila 1: Profesor -->
     <Label text="Profesor:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="txtProfesor" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <TextField fx:id="txtProfesor" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="250"/>
 
-    <Label text="Grado:"/>
-    <ComboBox fx:id="cmbGrado" prefWidth="100"/>
+    <!-- Fila 2: Grado (movido arriba) -->
+    <Label text="Grado:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <ComboBox fx:id="cmbGrado" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="250"/>
 
-    <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextArea fx:id="txtDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <!-- Fila 3: Descripción -->
+    <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <TextArea fx:id="txtDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="250" prefRowCount="4"/>
 
-    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER_RIGHT">
-        <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar"/>
-        <Button fx:id="saveButton" text="Guardar" styleClass="save-button" onAction="#handleGuardar"/>
+    <!-- Fila 4: Botones -->
+    <HBox spacing="15" GridPane.columnIndex="1" GridPane.rowIndex="4" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar" prefWidth="100"/>
+        <Button fx:id="saveButton" text="Guardar" styleClass="save-button" onAction="#handleGuardar" prefWidth="100"/>
     </HBox>
+
+    <!-- Configuración de márgenes para mejorar espaciado -->
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
 </GridPane>

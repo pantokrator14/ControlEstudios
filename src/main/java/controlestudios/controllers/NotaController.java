@@ -26,6 +26,8 @@ import controlestudios.models.*;
 import controlestudios.database.*;
 import javafx.collections.ObservableList;
 import org.kordamp.ikonli.javafx.FontIcon;
+import javafx.util.StringConverter;
+import javafx.collections.FXCollections;
 
 import java.awt.*;
 import java.io.File;
@@ -133,12 +135,20 @@ public class NotaController {
         List<Integer> anios = notaDAO.obtenerAniosEscolares();
 
         // Formatear años para mostrar: 2023 → "2023/2024"
-        Map<Integer, String> aniosFormateados = new LinkedHashMap<>();
-        for (Integer anio : anios) {
-            aniosFormateados.put(anio, anio + "/" + (anio + 1));
-        }
+        cmbAnioEscolar.getItems().setAll(anios); // Cambio importante aquí
 
-        cmbAnioEscolar.getItems().setAll(aniosFormateados.values());
+        // Configurar StringConverter para mostrar los años formateados
+        cmbAnioEscolar.setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer anio) {
+                return anio != null ? anio + "/" + (anio + 1) : "";
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return null; // No necesario para solo mostrar
+            }
+        });
     }
 
     private void configurarVinculaciones() {
@@ -219,7 +229,7 @@ public class NotaController {
             controller.setEstudiante(estudianteActual);
 
             // Filtrar materias por grado del estudiante
-            List<Materia> materias = materiaDAO.obtenerPorGrado(estudianteActual.getGrado());
+            ObservableList<Materia> materias = materiaDAO.obtenerPorGrado(estudianteActual.getGrado());
             controller.setMaterias(materias);
 
             Stage stage = new Stage();
@@ -245,7 +255,7 @@ public class NotaController {
         if (estudianteActual == null) return;
 
         Integer momento = cmbMomento.getValue();
-        Integer anioEscolar = cmbAnioEscolar.getValue();
+        Integer anioEscolar = cmbAnioEscolar.getValue(); // Corrección importante
         Integer anioActual = PeriodoUtil.obtenerAnioEscolarActual();
 
         if (momento == null || anioEscolar == null) {
@@ -265,6 +275,7 @@ public class NotaController {
             return;
         }
 
+        // CORRECCIÓN: Evitar redeclaración de la variable 'notas'
         ObservableList<Nota> notas = notaDAO.obtenerPorMomento(
                 estudianteActual.getId(),
                 momento,
@@ -286,11 +297,7 @@ public class NotaController {
             );
         } else {
             // Promedio histórico (fijo)
-            ObservableList<Nota> notas = notaDAO.obtenerPorMomento(
-                    estudianteActual.getId(),
-                    momento,
-                    anioEscolar
-            );
+            // CORRECCIÓN: Usar la variable 'notas' ya declarada
             promedio = notas.stream()
                     .mapToDouble(Nota::getValor)
                     .average()
