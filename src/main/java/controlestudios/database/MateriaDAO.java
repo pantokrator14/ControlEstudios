@@ -10,7 +10,8 @@ public class MateriaDAO {
 
     // Guardar materia
     public void guardarMateria(Materia materia) {
-        String sql = "INSERT INTO materias (nombre, descripcion, profesor) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO materias (nombre, profesor, descripcion, grado) " +
+                "VALUES (?, ?, ?, ?)";
 
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -18,6 +19,7 @@ public class MateriaDAO {
             pstmt.setString(1, materia.getNombre());
             pstmt.setString(2, materia.getDescripcion());
             pstmt.setString(3, materia.getProfesor());
+            pstmt.setInt(4, materia.getGrado());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -27,7 +29,8 @@ public class MateriaDAO {
 
     // Actualizar materia
     public void actualizarMateria(Materia materia) {
-        String sql = "UPDATE materias SET nombre = ?, descripcion = ?, profesor = ? WHERE id = ?";
+        String sql = "UPDATE materias SET nombre = ?, profesor = ?, descripcion = ?, " +
+                "grado = ? WHERE id = ?";
 
         try (Connection conn = controlestudios.database.DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -35,7 +38,8 @@ public class MateriaDAO {
             pstmt.setString(1, materia.getNombre());
             pstmt.setString(2, materia.getDescripcion());
             pstmt.setString(3, materia.getProfesor());
-            pstmt.setInt(4, materia.getId());
+            pstmt.setInt(4, materia.getGrado());
+            pstmt.setInt(5, materia.getId());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -71,7 +75,8 @@ public class MateriaDAO {
                 Materia materia = new Materia(
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
-                        rs.getString("profesor")
+                        rs.getString("profesor"),
+                        rs.getInt("grado")
                 );
                 materia.setId(rs.getInt("id"));
                 materias.add(materia);
@@ -79,6 +84,32 @@ public class MateriaDAO {
 
         } catch (SQLException e) {
             System.err.println("Error al obtener materias: " + e.getMessage());
+        }
+        return materias;
+    }
+
+    public ObservableList<Materia> obtenerPorGrado(int grado) {
+        String sql = "SELECT * FROM materias WHERE grado = ?";
+        ObservableList<Materia> materias = FXCollections.observableArrayList();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, grado);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Materia materia = new Materia(
+                        rs.getString("nombre"),
+                        rs.getString("profesor"),
+                        rs.getString("descripcion"),
+                        rs.getInt("grado")
+                );
+                materia.setId(rs.getInt("id"));
+                materias.add(materia);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener materias por grado: " + e.getMessage());
         }
         return materias;
     }

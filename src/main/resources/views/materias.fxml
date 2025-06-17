@@ -71,6 +71,7 @@
                         <TableColumn fx:id="colNombre" text="Nombre"/>
                         <TableColumn fx:id="colProfesor" text="Profesor"/>
                         <TableColumn fx:id="colDescripcion" text="Descripción"/>
+                        <TableColumn text="Grado" fx:id="colGrado" prefWidth="80"/>
                         <TableColumn fx:id="colAcciones" text="Acciones">
                            <cellFactory>
 

@@ -5,11 +5,12 @@ public class Materia {
     private String nombre;
     private String descripcion;
     private String profesor;
+    private int grado;
 
     // constructor vacío
     public Materia() {}
     // Constructor
-    public Materia(String nombre, String descripcion, String profesor) {
+    public Materia(String nombre, String descripcion, String profesor, int grado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.profesor = profesor;
@@ -50,4 +51,6 @@ public class Materia {
     public void setProfesor(String profesor) {
         this.profesor = profesor;
     }
+    public int getGrado() { return grado; }
+    public void setGrado(int grado) { this.grado = grado; }
 }

@@ -65,6 +65,7 @@
                     <columns>
                         <TableColumn fx:id="colNombre" text="Nombre"/>
                         <TableColumn fx:id="colCedula" text="Cédula"/>
+                        <TableColumn text="Grado" fx:id="colGrado" prefWidth="80"/>
                         <TableColumn fx:id="colSeccion" text="Sección" />
                         <TableColumn fx:id="colFechaNacimiento" text="Fecha de Nacimiento" />
                         <TableColumn fx:id="colAcciones" text="Acciones">

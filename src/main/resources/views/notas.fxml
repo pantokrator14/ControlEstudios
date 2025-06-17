@@ -73,12 +73,25 @@
                             <FontIcon iconLiteral="mdi-plus" iconSize="18"/>
                         </graphic>
                     </Button>
-                    <Button text="Descargar Boletín" styleClass="download-button" onAction="#handleDescargarBoleta">
+                </HBox>
+
+                <!-- NUEVA SECCIÓN: Selectores de período -->
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="periodo-container">
+                    <Label text="Momento:" styleClass="periodo-label"/>
+                    <ComboBox fx:id="cmbMomento" prefWidth="100"/>
+
+                    <Label text="Año Escolar:" styleClass="periodo-label" style="margin-left: 20px;"/>
+                    <ComboBox fx:id="cmbAnioEscolar" prefWidth="150"/>
+
+                    <Button text="Descargar Boletín" styleClass="download-button"
+                            onAction="#handleDescargarBoleta" style="margin-left: 20px;">
                         <graphic>
                             <FontIcon iconLiteral="mdi-download" iconSize="18"/>
                         </graphic>
                     </Button>
-                    <Button text="Generar Constancia" styleClass="constancia-button" onAction="#handleGenerarConstancia">
+
+                    <Button text="Generar Constancia" styleClass="constancia-button"
+                            onAction="#handleGenerarConstancia" style="margin-left: 10px;">
                         <graphic>
                             <FontIcon iconLiteral="mdi-certificate" iconSize="18"/>
                         </graphic>
