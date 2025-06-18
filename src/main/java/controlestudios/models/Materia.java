@@ -14,6 +14,7 @@ public class Materia {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.profesor = profesor;
+        this.grado = grado;
     }
 
     public Materia(int idMateria, String s, String s1, String s2) {

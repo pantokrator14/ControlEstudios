@@ -2,8 +2,8 @@
 -- Tabla Estudiantes
 CREATE TABLE IF NOT EXISTS estudiantes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre_completo TEXT NOT NULL,
-    fecha_nacimiento DATE NOT NULL,
+    nombreCompleto TEXT NOT NULL,
+    fechaNacimiento DATE NOT NULL,
     cedula TEXT NOT NULL UNIQUE,
     grado INTEGER NOT NULL DEFAULT 1,
     seccion TEXT NOT NULL
