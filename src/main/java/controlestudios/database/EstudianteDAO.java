@@ -14,7 +14,7 @@ public class EstudianteDAO {
 
     // Guardar un estudiante
     public void guardarEstudiante(Estudiante estudiante) {
-        String sql = "INSERT INTO estudiantes (nombre, cedula, fecha_nacimiento, seccion, grado) " +
+        String sql = "INSERT INTO estudiantes (nombreCompleto, cedula, fechaNacimiento, seccion, grado) " +
                 "VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -31,7 +31,7 @@ public class EstudianteDAO {
 
     // Actualizar estudiante
     public void actualizarEstudiante(Estudiante estudiante) {
-        String sql = "UPDATE estudiantes SET nombre = ?, cedula = ?, fecha_nacimiento = ?, " +
+        String sql = "UPDATE estudiantes SET nombreCompleto = ?, cedula = ?, fechaNacimiento = ?, " +
                 "seccion = ?, grado = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -61,10 +61,11 @@ public class EstudianteDAO {
 
             while (rs.next()) {
                 Estudiante estudiante = new Estudiante(
-                        rs.getString("nombre_completo"),
-                        rs.getDate("fecha_nacimiento").toLocalDate(),
+                        rs.getString("nombreCompleto"),
+                        rs.getDate("fechaNacimiento").toLocalDate(),
                         rs.getString("cedula"),
-                        rs.getString("seccion")
+                        rs.getString("seccion"),
+                        rs.getInt("grado")
                 );
                 estudiante.setId(rs.getInt("id"));
                 estudiantes.add(estudiante);
@@ -107,6 +108,7 @@ public class EstudianteDAO {
                 estudiante.setFechaNacimiento(fechaSql.toLocalDate()); // Convertir a LocalDate
 
                 estudiante.setSeccion(rs.getString("seccion"));
+                estudiante.setGrado(rs.getInt("grado"));
                 return estudiante;
             }
         } catch (SQLException e) {

@@ -13,14 +13,15 @@ public class Estudiante {
     // constructor vacío
     public Estudiante() {}
     // Constructor
-    public Estudiante(String nombreCompleto, LocalDate fechaNacimiento, String cedula, String seccion) {
+    public Estudiante(String nombreCompleto, LocalDate fechaNacimiento, String cedula, String seccion, int grado) {
         this.nombreCompleto = nombreCompleto;
         this.fechaNacimiento = fechaNacimiento;
         this.cedula = cedula;
         this.seccion = seccion;
+        this.grado = grado;
     }
 
-    public Estudiante(int id, String nombreCompleto, String cedula, LocalDate fechaNacimiento, String seccion) {
+    public Estudiante(int id, String nombreCompleto, String cedula, LocalDate fechaNacimiento, String seccion, int grado) {
     }
 
     // Getters y Setters
