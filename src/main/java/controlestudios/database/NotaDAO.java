@@ -127,7 +127,7 @@ public class NotaDAO {
     }
 
     public List<Integer> obtenerAniosEscolares() {
-        String sql = "SELECT DISTINCT anio_escolar FROM notas ORDER BY anio_escolar DESC";
+        String sql = "SELECT DISTINCT anio_escolar FROM notas";
         List<Integer> anios = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -140,6 +140,13 @@ public class NotaDAO {
         } catch (SQLException e) {
             System.err.println("Error al obtener años escolares: " + e.getMessage());
         }
+
+        // Si no hay años, agregar el año actual
+        if (anios.isEmpty()) {
+            int anioActual = PeriodoUtil.obtenerAnioEscolarActual();
+            anios.add(anioActual);
+        }
+
         return anios;
     }
 

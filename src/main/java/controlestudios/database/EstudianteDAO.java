@@ -101,10 +101,10 @@ public class EstudianteDAO {
             if (rs.next()) {
                 Estudiante estudiante = new Estudiante();
                 estudiante.setId(rs.getInt("id"));
-                estudiante.setNombreCompleto(rs.getString("nombre_completo"));
+                estudiante.setNombreCompleto(rs.getString("nombreCompleto"));
                 estudiante.setCedula(rs.getString("cedula"));
 
-                Date fechaSql = rs.getDate("fecha_nacimiento"); // Obtener como Date
+                Date fechaSql = rs.getDate("fechaNacimiento"); // Obtener como Date
                 estudiante.setFechaNacimiento(fechaSql.toLocalDate()); // Convertir a LocalDate
 
                 estudiante.setSeccion(rs.getString("seccion"));
