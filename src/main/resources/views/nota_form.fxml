@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 
 <GridPane xmlns="http://javafx.com/javafx/17"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controlestudios.controllers.NotaFormController"
-          hgap="10" vgap="10"
+          hgap="15" vgap="15"
           alignment="CENTER">
 
-    <Label text="Materia:" GridPane.rowIndex="0"/>
-    <ComboBox fx:id="cbMaterias" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <!-- Padding consistente con otros formularios -->
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
 
-    <Label text="Nota:" GridPane.rowIndex="1"/>
-    <TextField fx:id="txtNota" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <!-- Fila 0: Materia -->
+    <Label text="Materia:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="cbMaterias" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250"/>
 
-    <Label fx:id="lblFechaRegistro"/>
-    <DatePicker fx:id="dpFechaRegistro" promptText="Fecha de evaluación" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <!-- Fila 1: Nota -->
+    <Label text="Nota:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtNota" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="250"/>
 
-    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnIndex="1">
-        <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar"/>
-        <Button fx:id="btnGuardar" text="Guardar" styleClass="save-button" onAction="#handleGuardar"/>
+    <!-- Fila 2: Fecha de Evaluación -->
+    <Label fx:id="lblFechaInfo" text="Fecha de evaluación:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <DatePicker fx:id="dpFechaRegistro" promptText="DD/MM/AAAA"
+                GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="250"/>
+
+    <!-- Fila 3: Botones -->
+    <HBox spacing="15" GridPane.rowIndex="3" GridPane.columnIndex="1"
+          alignment="CENTER_RIGHT" GridPane.halignment="RIGHT">
+        <Button text="Cancelar" styleClass="cancel-button" onAction="#handleCancelar" prefWidth="100"/>
+        <Button fx:id="btnGuardar" text="Guardar" styleClass="save-button" onAction="#handleGuardar" prefWidth="100"/>
     </HBox>
 </GridPane>

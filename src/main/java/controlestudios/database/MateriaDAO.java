@@ -74,8 +74,8 @@ public class MateriaDAO {
             while (rs.next()) {
                 Materia materia = new Materia(
                         rs.getString("nombre"),
-                        rs.getString("descripcion"),
                         rs.getString("profesor"),
+                        rs.getString("descripcion"),
                         rs.getInt("grado")
                 );
                 materia.setId(rs.getInt("id"));
@@ -101,8 +101,8 @@ public class MateriaDAO {
             while (rs.next()) {
                 Materia materia = new Materia(
                         rs.getString("nombre"),
-                        rs.getString("descripcion"),
                         rs.getString("profesor"),
+                        rs.getString("descripcion"),
                         rs.getInt("grado")
                 );
                 materia.setId(rs.getInt("id"));

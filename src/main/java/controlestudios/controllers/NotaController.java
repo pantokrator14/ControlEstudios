@@ -33,10 +33,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
 public class NotaController {
 
     //Sidebar
@@ -127,15 +126,14 @@ public class NotaController {
         // Configurar ComboBox de momentos
         cmbMomento.getItems().addAll(1, 2, 3);
         cmbMomento.getSelectionModel().selectFirst();
+
+        // Cargar años escolares
         cargarAniosEscolares();
-        cmbMomento.getSelectionModel().selectFirst();
     }
 
+    // En NotaController.java
     private void cargarAniosEscolares() {
         List<Integer> anios = notaDAO.obtenerAniosEscolares();
-
-        // Formatear años para mostrar: 2023 → "2023/2024"
-        cmbAnioEscolar.getItems().setAll(anios); // Cambio importante aquí
 
         // Configurar StringConverter para mostrar los años formateados
         cmbAnioEscolar.setConverter(new StringConverter<Integer>() {
@@ -146,9 +144,21 @@ public class NotaController {
 
             @Override
             public Integer fromString(String string) {
-                return null; // No necesario para solo mostrar
+                // Extraer el año base del formato "2023/2024"
+                if (string != null && string.contains("/")) {
+                    return Integer.parseInt(string.split("/")[0]);
+                }
+                return null;
             }
         });
+
+        // Ordenar los años de más reciente a más antiguo
+        anios.sort(Collections.reverseOrder());
+        cmbAnioEscolar.getItems().setAll(anios);
+
+        // Seleccionar el año actual por defecto
+        int anioActual = PeriodoUtil.obtenerAnioEscolarActual();
+        cmbAnioEscolar.getSelectionModel().select(Integer.valueOf(anioActual));
     }
 
     private void configurarVinculaciones() {
